@@ -1,4 +1,4 @@
-def call(String lang, String projectKey) {
+def call(Map params) {
     log.debug("lang: ${lang}, projectKey: ${projectKey}")
 
     def map = [:]
@@ -10,6 +10,9 @@ def call(String lang, String projectKey) {
             break;
         case "java":
             pipeline_java(projectKey, map.get(projectKey))
+            break;
+        case "tomcat":
+            pipeline_tomcat(params)
             break;
         default:
             println "nice to meet you"
