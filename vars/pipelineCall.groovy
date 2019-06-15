@@ -28,7 +28,7 @@ def call(Map params) {
         case "tomcat":
             pipeline_tomcat(params)
             break;
-        case "nginx":
+        case "nodejs":
             pipeline_nodejs(params)
             break;
         default:
