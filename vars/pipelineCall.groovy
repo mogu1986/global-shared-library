@@ -29,7 +29,7 @@ def call(Map params) {
             pipeline_tomcat(params)
             break;
         case "nginx":
-            pipeline_nginx(params)
+            pipeline_nodejs(params)
             break;
         default:
             println "nice to meet you"
