@@ -7,7 +7,11 @@ def call(Map map) {
     pipeline {
 
         agent {
-            label 'nodejs2'
+            label 'nodejs'
+        }
+
+        triggers {
+            cron('H/10 * * * *')
         }
 
         options {
