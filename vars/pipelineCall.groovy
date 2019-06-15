@@ -2,6 +2,8 @@ def call(Map params) {
     def map = [:]
     map = ['distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294']
 
+    def lang = params.get('LANG')
+    log.debug("lang = ${lang}")
     switch (lang) {
         case "node":
             nodePipeline()
