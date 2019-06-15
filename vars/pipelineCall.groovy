@@ -6,6 +6,12 @@ def call(Map params) {
     def app = params.get('APP_NAME')
 
     log.debug("lang = ${lang}, app = ${app}")
+    if (map.containsKey('WAR_PATH')) {
+        log.debug("war_path = ${WAR_PATH}")
+    }
+    if (map.containsKey('HTML_PATH')) {
+        log.debug("html_path = ${HTML_PATH}")
+    }
 
     switch (lang) {
         case "node":
