@@ -11,10 +11,14 @@ def call(Map map) {
             label 'nodejs'
         }
 
+        triggers {
+            cron('H/10 * * * *')
+        }
+
         options {
             buildDiscarder(logRotator(numToKeepStr: '50'))
             disableConcurrentBuilds()
-            timeout(time: 20, unit: 'MINUTES')
+            timeout(time: 10, unit: 'MINUTES')
         }
 
         environment {

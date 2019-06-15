@@ -10,6 +10,16 @@ def call(Map map) {
             label 'nodejs'
         }
 
+        triggers {
+            cron('H/10 * * * *')
+        }
+
+        options {
+            buildDiscarder(logRotator(numToKeepStr: '50'))
+            disableConcurrentBuilds()
+            timeout(time: 10, unit: 'MINUTES')
+        }
+
         environment {
             HARBOR = "harbor.top.mw"
             HARBOR_URL = "http://${HARBOR}"
@@ -36,19 +46,6 @@ def call(Map map) {
                 steps {
                     sh "yarn install"
                     sh "yarn build"
-                }
-            }
-
-            stage('推送镜像') {
-                steps {
-                    script {
-                        docker.withRegistry("$HARBOR_URL", "harbor") {
-                            def app = docker.build("$IMAGE_NAME")
-                            app.push()
-                            app.push('latest')
-                        }
-                        sh "docker rmi -f $IMAGE_NAME"
-                    }
                 }
             }
 
