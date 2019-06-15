@@ -7,7 +7,7 @@ def call(Map map) {
     pipeline {
 
         agent {
-            label 'nodejs'
+            label 'nodejs2'
         }
 
         options {
