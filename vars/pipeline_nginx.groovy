@@ -11,6 +11,9 @@ def call(Map map) {
         }
 
         environment {
+            HARBOR = "harbor.top.mw"
+            HARBOR_URL = "http://${HARBOR}"
+
             APP_NAME = "${map.APP_NAME}"
             LANG = "${map.LANG}"
         }
