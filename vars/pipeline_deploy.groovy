@@ -1,6 +1,4 @@
 def call(Map params) {
-    log.debug("lang: ${lang}, projectKey: ${projectKey}")
-
     def map = [:]
     map = ['distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294']
 
