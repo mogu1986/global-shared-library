@@ -7,7 +7,7 @@ def call(Map map) {
     pipeline {
 
         agent {
-            label 'master'
+            label 'nodejs'
         }
 
         environment {
