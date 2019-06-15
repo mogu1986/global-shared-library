@@ -3,7 +3,10 @@ def call(Map params) {
     map = ['distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294']
 
     def lang = params.get('LANG')
-    log.debug("lang = ${lang}")
+    def app = params.get('APP_NAME')
+
+    log.debug("lang = ${lang}, app = ${app}")
+
     switch (lang) {
         case "node":
             nodePipeline()
