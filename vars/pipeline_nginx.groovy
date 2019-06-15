@@ -14,6 +14,9 @@ def call(Map map) {
             HARBOR = "harbor.top.mw"
             HARBOR_URL = "http://${HARBOR}"
 
+            // 容器相关配置
+            IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
+
             APP_NAME = "${map.APP_NAME}"
             LANG = "${map.LANG}"
         }
