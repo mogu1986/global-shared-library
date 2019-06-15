@@ -6,12 +6,12 @@ def call(Map params) {
     def app = params.get('APP_NAME')
 
     def key = ""
-    def path = "";
+    def path = ""
 
-    if (map.containsKey('WAR_PATH')) {
+    if (params.containsKey('WAR_PATH')) {
         key = "WAR_PATH"
         path = params.get('WAR_PATH')
-    } else if (map.containsKey('HTML_PATH')) {
+    } else if (params.containsKey('HTML_PATH')) {
         key = "HTML_PATH"
         path = params.get(key)
     }
