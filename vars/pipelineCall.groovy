@@ -10,7 +10,7 @@ def call(Map params) {
 
     if (params.containsKey('WAR_PATH')) {
         key = "WAR_PATH"
-        path = params.get('WAR_PATH')
+        path = params.get(key)
     } else if (params.containsKey('HTML_PATH')) {
         key = "HTML_PATH"
         path = params.get(key)
