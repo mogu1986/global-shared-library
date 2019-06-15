@@ -6,15 +6,11 @@
 def call(Map map) {
     pipeline {
 
-        agent any
+        agent {
+            label 'master'
+        }
 
         environment {
-            // harbor 相关配
-            HARBOR = "harbor.top.mw"
-            HARBOR_URL = "http://${HARBOR}"
-
-            IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
-
             APP_NAME = "${map.APP_NAME}"
             LANG = "${map.LANG}"
         }
