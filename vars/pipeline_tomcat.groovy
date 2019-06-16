@@ -95,31 +95,19 @@ def call(Map map) {
 
             success {
                 script {
-                    wrap([$class: 'BuildUser']) {
-                        mail to: "${BUILD_USER_EMAIL }",
-                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER}) result",
-                                body: "${BUILD_USER}'s pineline '${JOB_NAME}' (${BUILD_NUMBER}) run success\n请及时前往${env.BUILD_URL}进行查看"
-                    }
+                    sh "success"
                 }
             }
 
             failure {
                 script {
-                    wrap([$class: 'BuildUser']) {
-                        mail to: "${BUILD_USER_EMAIL }",
-                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER}) result",
-                                body: "${BUILD_USER}'s pineline  '${JOB_NAME}' (${BUILD_NUMBER}) run failure\n请及时前往${env.BUILD_URL}进行查看"
-                    }
+                    sh "failure"
                 }
 
             }
             unstable {
                 script {
-                    wrap([$class: 'BuildUser']) {
-                        mail to: "${BUILD_USER_EMAIL }",
-                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER})结果",
-                                body: "${BUILD_USER}'s pineline '${JOB_NAME}' (${BUILD_NUMBER}) run unstable\n请及时前往${env.BUILD_URL}进行查看"
-                    }
+                    sh "unstable"
                 }
             }
 
