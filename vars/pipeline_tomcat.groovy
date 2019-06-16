@@ -74,23 +74,55 @@ def call(Map map) {
                     }
                 }
             }
+//
+//            stage("邮件通知") {
+//                steps {
+//                    configFileProvider(
+//                            [configFile(fileId: "html-global-settings", variable: 'body')]) {
+//                        emailext(
+//                                to: 'gaowei@fengjinggroup.com',
+//                                subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
+//                                body: readFile("${body}")
+//                        )
+//                    }
+//                }
+//            }
 
-            stage("邮件通知") {
-                steps {
-                    configFileProvider(
-                            [configFile(fileId: "html-global-settings", variable: 'body')]) {
-                        emailext(
-                                to: 'gaowei@fengjinggroup.com',
-                                subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
-                                body: readFile("${body}")
-                        )
-                    }
-                }
-            }
         }
 
         post {
             always {cleanWs()}
+
+            success {
+                script {
+                    wrap([$class: 'BuildUser']) {
+                        mail to: "${BUILD_USER_EMAIL }",
+                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER}) result",
+                                body: "${BUILD_USER}'s pineline '${JOB_NAME}' (${BUILD_NUMBER}) run success\n请及时前往${env.BUILD_URL}进行查看"
+                    }
+                }
+            }
+
+            failure {
+                script {
+                    wrap([$class: 'BuildUser']) {
+                        mail to: "${BUILD_USER_EMAIL }",
+                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER}) result",
+                                body: "${BUILD_USER}'s pineline  '${JOB_NAME}' (${BUILD_NUMBER}) run failure\n请及时前往${env.BUILD_URL}进行查看"
+                    }
+                }
+
+            }
+            unstable {
+                script {
+                    wrap([$class: 'BuildUser']) {
+                        mail to: "${BUILD_USER_EMAIL }",
+                                subject: "PineLine '${JOB_NAME}' (${BUILD_NUMBER})结果",
+                                body: "${BUILD_USER}'s pineline '${JOB_NAME}' (${BUILD_NUMBER}) run unstable\n请及时前往${env.BUILD_URL}进行查看"
+                    }
+                }
+            }
+
         }
 
     }
