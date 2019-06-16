@@ -22,7 +22,7 @@ def call(Map map) {
         }
 
         environment {
-            APP_NAME = "${map.app}"
+            APP = "${map.app}"
             LANG = "${map.lang}"
         }
 
@@ -65,7 +65,7 @@ def call(Map map) {
                                         colorized: true,
                                         extraVars: [
                                                 lang: "${env.LANG}",
-                                                app: [value: "${env.APP_NAME}", hidden: false],
+                                                app: [value: "${env.APP}", hidden: false],
                                                 war_path: "${env.WORKSPACE}/${params.WAR_PATH}"
                                         ]
                                 )

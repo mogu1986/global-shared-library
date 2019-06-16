@@ -27,7 +27,7 @@ def call(Map map) {
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
 
-            APP_NAME = "${map.app}"
+            APP = "${map.app}"
             LANG = "${map.lang}"
         }
 
@@ -64,7 +64,7 @@ def call(Map map) {
                                         colorized: true,
                                         extraVars: [
                                                 lang: "${env.LANG}",
-                                                app: [value: "${env.APP_NAME}", hidden: false],
+                                                app: [value: "${env.APP}", hidden: false],
                                                 html_path: "${env.WORKSPACE}/${params.HTML_PATH}/"
                                         ]
                                 )
