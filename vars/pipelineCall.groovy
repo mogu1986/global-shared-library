@@ -1,12 +1,13 @@
 def call(Map params) {
-    def map = [:]
-    map = ['distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294']
 
     def lang = params.get('lang')
     def app = params.get('app')
     def artifact = params.get('artifact')
 
     log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
+
+    def key = getSonarKey(app)
+    log.debug("key = ${key}")
 
     switch (lang) {
         case "java":
@@ -22,4 +23,16 @@ def call(Map params) {
             println "nice to meet you"
     }
 
+}
+
+def getSonarKey(String app) {
+
+    def map = [:]
+    map.put('demo':'2632d5e4376ad7aa300fd70e3b8254504573a294')
+    map.put('vue':'2632d5e4376ad7aa300fd70e3b8254504573a294')
+    map.put('distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294')
+
+    def key = map.get(app)
+
+    return key
 }
