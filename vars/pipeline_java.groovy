@@ -3,7 +3,7 @@
 *  Date: 2019-04-23 16:14
 *  Author: gaowei
 */
-def call(String projectKey, String sonarKey) {
+def call(Map map) {
     pipeline {
 
         agent {
