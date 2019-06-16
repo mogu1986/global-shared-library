@@ -94,21 +94,12 @@ def call(Map map) {
             always {cleanWs()}
 
             success {
-                script {
-                    sh "success"
-                }
             }
 
             failure {
-                script {
-                    sh "failure"
-                }
 
             }
             unstable {
-                script {
-                    sh "unstable"
-                }
             }
 
         }
