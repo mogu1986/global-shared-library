@@ -1,3 +1,5 @@
 def debug(String message) {
-    echo "debug: ${message}"
+    ansiColor('xterm') {
+        echo "debug: ${message}"
+    }
 }
