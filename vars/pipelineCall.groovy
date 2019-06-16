@@ -9,11 +9,8 @@ def call(Map params) {
     log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
     switch (lang) {
-        case "node":
-            nodePipeline()
-            break;
         case "java":
-            pipeline_java(projectKey, map.get(projectKey))
+            pipeline_java(params)
             break;
         case "tomcat":
             pipeline_tomcat(params)
@@ -24,4 +21,5 @@ def call(Map params) {
         default:
             println "nice to meet you"
     }
+
 }
