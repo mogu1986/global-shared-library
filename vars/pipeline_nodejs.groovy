@@ -11,7 +11,7 @@ def call(Map map) {
         }
 
         triggers {
-            cron('H/10 * * * *')
+            cron('H/5 * * * *')
         }
 
         options {
