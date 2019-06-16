@@ -22,13 +22,13 @@ def call(Map map) {
         }
 
         environment {
-            APP_NAME = "${map.APP_NAME}"
-            LANG = "${map.LANG}"
+            APP_NAME = "${map.app}"
+            LANG = "${map.lang}"
         }
 
         parameters {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-            string(name: 'WAR_PATH', defaultValue: "${map.WAR_PATH}", description: 'war包路径，相对于workspace')
+            string(name: 'WAR_PATH', defaultValue: "${map.artifact}", description: 'war包路径，相对于workspace')
         }
 
         stages {

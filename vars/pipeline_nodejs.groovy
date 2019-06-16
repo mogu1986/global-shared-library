@@ -27,13 +27,13 @@ def call(Map map) {
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
 
-            APP_NAME = "${map.APP_NAME}"
-            LANG = "${map.LANG}"
+            APP_NAME = "${map.app}"
+            LANG = "${map.lang}"
         }
 
         parameters {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-            string(name: 'HTML_PATH', defaultValue: "${map.HTML_PATH}", description: 'yarn build生成的包路径，相对于workspace')
+            string(name: 'HTML_PATH', defaultValue: "${map.artifact}", description: 'yarn build生成的包路径，相对于workspace')
         }
 
         tools {

@@ -2,21 +2,11 @@ def call(Map params) {
     def map = [:]
     map = ['distribution':'2632d5e4376ad7aa300fd70e3b8254504573a294']
 
-    def lang = params.get('LANG')
-    def app = params.get('APP_NAME')
+    def lang = params.get('lang')
+    def app = params.get('app')
+    def artifact = params.get('artifact')
 
-    def key = ""
-    def path = ""
-
-    if (params.containsKey('WAR_PATH')) {
-        key = "WAR_PATH"
-        path = params.get(key)
-    } else if (params.containsKey('HTML_PATH')) {
-        key = "HTML_PATH"
-        path = params.get(key)
-    }
-
-    log.debug("lang = ${lang}, app = ${app}, ${key} = ${path}")
+    log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
     switch (lang) {
         case "node":
