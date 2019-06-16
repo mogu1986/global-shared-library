@@ -1,4 +1,4 @@
-package com.mw;
+package com.sxh;
 
 import java.io.Serializable;
 
