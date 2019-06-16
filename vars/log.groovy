@@ -1,5 +1,5 @@
 def debug(String message) {
-    ansiColor('xterm') {
+    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         echo "debug: ${message}"
     }
 }
