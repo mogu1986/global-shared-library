@@ -28,7 +28,7 @@ def call(Map map) {
 
         parameters {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-            string(name: 'WAR_PATH', defaultValue: "${map.artifact}", description: 'war包路径，相对于workspace')
+            string(name: 'ARTIFACT', defaultValue: "${map.artifact}", description: 'war包路径，相对于workspace')
         }
 
         stages {
@@ -66,7 +66,7 @@ def call(Map map) {
                                         extraVars: [
                                                 lang: "${env.LANG}",
                                                 app: [value: "${env.APP}", hidden: false],
-                                                war_path: "${env.WORKSPACE}/${params.WAR_PATH}"
+                                                artifact: "${env.WORKSPACE}/${params.ARTIFACT}"
                                         ]
                                 )
                             }

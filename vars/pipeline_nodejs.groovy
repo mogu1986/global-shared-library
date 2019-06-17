@@ -33,7 +33,7 @@ def call(Map map) {
 
         parameters {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
-            string(name: 'HTML_PATH', defaultValue: "${map.artifact}", description: 'yarn build生成的包路径，相对于workspace')
+            string(name: 'ARTIFACT', defaultValue: "${map.artifact}", description: 'yarn build生成的包路径，相对于workspace')
         }
 
         tools {
@@ -65,7 +65,7 @@ def call(Map map) {
                                         extraVars: [
                                                 lang: "${env.LANG}",
                                                 app: [value: "${env.APP}", hidden: false],
-                                                html_path: "${env.WORKSPACE}/${params.HTML_PATH}/"
+                                                artifact: "${env.WORKSPACE}/${params.ARTIFACT}/"
                                         ]
                                 )
                             }
