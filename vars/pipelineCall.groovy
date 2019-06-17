@@ -1,11 +1,16 @@
 def call(Map params) {
 
-    def keys = ['lang', 'app', 'artifact', 'abc']
+    if (params == null || params.size() == 0) {
+        log.error("params is null")
+        return
+    }
+
+    def keys = ['lang', 'app', 'artifact']
 
     for (int i = 0; i < keys.size(); i++) {
         def key = keys.get(i)
         if (!params.containsKey(key)) {
-            log.debug("key ${key} is null")
+            log.error("key ${key} is null")
             return
         }
     }

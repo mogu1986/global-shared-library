@@ -3,3 +3,9 @@ def debug(String message) {
         echo "debug: ${message}"
     }
 }
+
+def error(String message) {
+    ansiColor('xterm') {
+        echo "error: ${message}"
+    }
+}
