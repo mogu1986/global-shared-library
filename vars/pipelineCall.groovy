@@ -1,7 +1,7 @@
 def call(Map params) {
 
     def keys = ['lang', 'app', 'artifact', 'abc']
-    kyes.each{
+    keys.each{
         if (!params.containsKey("${it}")) {
             log.debug("key ${it} is null")
             return
