@@ -9,10 +9,10 @@ def call(Map map) {
         agent {
             label 'nodejs'
         }
-
-        triggers {
-            cron('H/5 * * * *')
-        }
+//
+//        triggers {
+//            cron('H/5 * * * *')
+//        }
 
         options {
             buildDiscarder(logRotator(numToKeepStr: '50'))
