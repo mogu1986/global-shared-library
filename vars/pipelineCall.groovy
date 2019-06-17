@@ -1,5 +1,13 @@
 def call(Map params) {
 
+    def keys = ['lang', 'app', 'artifact', 'abc']
+    kyes.each{
+        if (!params.containsKey("${it}")) {
+            log.debug("key ${it} is null")
+            return
+        }
+    }
+
     def lang = params.get('lang')
     def app = params.get('app')
     def artifact = params.get('artifact')
