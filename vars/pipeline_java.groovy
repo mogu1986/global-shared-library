@@ -34,10 +34,6 @@ def call(Map map) {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
         }
 
-        tools {
-            scanner 'SonarQube Scanner', 'hudson.plugins.sonar.SonarRunnerInstallation'
-        }
-
         stages {
             stage('拉取代码') {
                 steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
@@ -51,12 +47,11 @@ def call(Map map) {
                 }
             }
 
-
             stage('Sonar') {
                 steps {
                     script {
-//                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                        sh "sonar-scanner -Dsonar.host.url=http://sonar.top.mw"
+                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                        sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw"
                     }
                 }
             }
