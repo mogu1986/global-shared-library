@@ -52,7 +52,7 @@ def call(Map map) {
                     script {
                         def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                         wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
-                                [password: sonarKey, var: 's1']
+                                [password: "${map.app}", var: 's1']
                         ]]) {
                             sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw"
 //                            sh "mvn sonar:sonar -Dsonar.host.url=${env.SONAR_URL} -Dsonar.projectKey=${projectKey} -Dsonar.login=${sonarKey}"
