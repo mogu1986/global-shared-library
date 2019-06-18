@@ -87,19 +87,19 @@ def call(Map map) {
                     }
                 }
             }
-//
-//            stage("邮件通知") {
-//                steps {
-//                    configFileProvider(
-//                            [configFile(fileId: "html-global-settings", variable: 'body')]) {
-//                        emailext(
-//                                to: 'gaowei@fengjinggroup.com',
-//                                subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
-//                                body: readFile("${body}")
-//                        )
-//                    }
-//                }
-//            }
+
+            stage("邮件通知") {
+                steps {
+                    configFileProvider(
+                            [configFile(fileId: "html-global-settings", variable: 'body')]) {
+                        emailext(
+                                to: 'gaowei@fengjinggroup.com',
+                                subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
+                                body: readFile("${body}")
+                        )
+                    }
+                }
+            }
 
         }
 
