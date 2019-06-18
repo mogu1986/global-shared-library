@@ -45,7 +45,7 @@ def getSonarKey(String app) {
     def map = [:]
     map.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
     map.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    map.put('distribution', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    map.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
 
     def key = map.get(app)
 

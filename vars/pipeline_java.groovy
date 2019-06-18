@@ -12,15 +12,11 @@ def call(Map map) {
 
         options {
             // 保留1个工程
-            buildDiscarder(logRotator(numToKeepStr: '1'))
+            buildDiscarder(logRotator(numToKeepStr: '10'))
             // 不允许同时执行多次
             disableConcurrentBuilds()
             // 整个pipeline超时时间
             timeout(time: 20, unit: 'MINUTES')
-        }
-
-        tools {
-            maven 'M3'
         }
 
         environment {
@@ -42,7 +38,6 @@ def call(Map map) {
         }
 
         stages {
-
             stage('拉取代码') {
                 steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
             }
@@ -55,15 +50,27 @@ def call(Map map) {
                 }
             }
 
+
             stage('Sonar') {
                 steps {
-                    wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
-                            [password: sonarKey, var: 's1']
-                    ]]) {
-                        sh "mvn sonar:sonar -Dsonar.host.url=${env.SONAR_URL} -Dsonar.projectKey=${projectKey} -Dsonar.login=${sonarKey}"
+                    script {
+                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                        withSonarQubeEnv('sonar') {
+                            sh "${sonarHome}/bin/sonar-scanner"
+                        }
                     }
                 }
             }
+//
+//            stage('Sonar') {
+//                steps {
+//                    wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
+//                            [password: sonarKey, var: 's1']
+//                    ]]) {
+//                        sh "mvn sonar:sonar -Dsonar.host.url=${env.SONAR_URL} -Dsonar.projectKey=${projectKey} -Dsonar.login=${sonarKey}"
+//                    }
+//                }
+//            }
 
             stage('单元测试') {
                 steps {
