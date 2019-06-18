@@ -50,7 +50,7 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        if (${DEPLOY_PWD} != 'gaowei') {
+                        if (${params.DEPLOY_PWD} != 'gaowei') {
                             echo "YES YES, ${DEPLOY_PWD}"
                         } else {
                             echo "NO NO, ${DEPLOY_PWD}"
