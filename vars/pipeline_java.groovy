@@ -54,7 +54,7 @@ def call(Map map) {
                             echo "YES YES, ${DEPLOY_PWD}"
                         } else {
                             log.error('密码错误')
-//                            throw new GroovyRuntimeException('密码错误')
+                            throw new GroovyRuntimeException('密码错误')
                         }
                     }
                 }
