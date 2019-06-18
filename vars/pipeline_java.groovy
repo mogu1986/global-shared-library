@@ -50,11 +50,11 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        if ("${params.DEPLOY_PWD}" != 'gaowei') {
+                        if ("${DEPLOY_PWD}" == 'gaowei') {
+                            echo "YES YES, ${DEPLOY_PWD}"
+                        } else {
                             log.error('密码错误')
 //                            throw new GroovyRuntimeException('密码错误')
-                        } else {
-                            echo "YES YES, ${DEPLOY_PWD}"
                         }
                     }
                 }
