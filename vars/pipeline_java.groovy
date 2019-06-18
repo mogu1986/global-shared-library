@@ -47,29 +47,18 @@ def call(Map map) {
                 }
             }
 
-            stage('Sonar') {
+            stage('Sonar分析') {
                 steps {
                     script {
                         def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                         wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
                                 [password: "${map.app}", var: 's1']
                         ]]) {
-                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw"
-//                            sh "mvn sonar:sonar -Dsonar.host.url=${env.SONAR_URL} -Dsonar.projectKey=${projectKey} -Dsonar.login=${sonarKey}"
+                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.projectKey=${map.app} -Dsonar.projectName=${map.app} -Dsonar.sources=${sonar.sources} -Dsonar.java.binaries=${sonar.java.binaries}"
                         }
                     }
                 }
             }
-//
-//            stage('Sonar') {
-//                steps {
-//                    wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
-//                            [password: sonarKey, var: 's1']
-//                    ]]) {
-//                        sh "mvn sonar:sonar -Dsonar.host.url=${env.SONAR_URL} -Dsonar.projectKey=${projectKey} -Dsonar.login=${sonarKey}"
-//                    }
-//                }
-//            }
 
             stage('单元测试') {
                 steps {
