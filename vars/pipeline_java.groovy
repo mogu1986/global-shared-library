@@ -38,7 +38,7 @@ def call(Map map) {
 
             stage('输入密钥') {
                 when {
-                    expression { return params.BUILD_BRANCH == 'dev'}
+                    expression { return params.BUILD_BRANCH == 'test'}
                 }
                 input {
                     message "即将发布到测试环境，请输入密钥!"
