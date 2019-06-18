@@ -51,9 +51,10 @@ def call(Map map) {
                 steps {
                     script {
                         if ("${params.DEPLOY_PWD}" != 'gaowei') {
-                            echo "YES YES, ${DEPLOY_PWD}"
+                            log.error('密码错误')
+                            currentBuild.result = 'FAILURE'
                         } else {
-                            echo "NO NO, ${DEPLOY_PWD}"
+                            echo "YES YES, ${DEPLOY_PWD}"
                         }
                     }
                 }
