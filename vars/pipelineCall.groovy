@@ -1,7 +1,7 @@
 def call(Map params) {
 
     if (params == null || params.size() == 0) {
-        log.error("params is null")
+        log.error("error : params is null")
         return
     }
 
@@ -10,7 +10,7 @@ def call(Map params) {
     for (int i = 0; i < keys.size(); i++) {
         def key = keys.get(i)
         if (!params.containsKey(key)) {
-            log.error("key ${key} is null")
+            log.error("error : key ${key} is null")
             return
         }
     }
@@ -19,7 +19,7 @@ def call(Map params) {
     def app = params.get('app')
     def artifact = params.get('artifact')
 
-    log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
+    log.debug("print : lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
     putSonarKey(params, app)
 
@@ -46,7 +46,7 @@ def putSonarKey(Map params, String app) {
         params.put('sonar_sources', '.')
     }
 
-    log.debug("put ${app} sonar_login")
+    log.debug("sonar : put ${app} sonar_login")
 
     def sonar = [:]
     sonar.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
