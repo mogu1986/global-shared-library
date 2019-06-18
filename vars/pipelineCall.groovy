@@ -21,8 +21,7 @@ def call(Map params) {
 
     log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
-    def key = getSonarKey(app)
-    log.debug("key = ${key}")
+    putSonarKey(params, lang)
 
     switch (lang) {
         case "java":
@@ -40,14 +39,17 @@ def call(Map params) {
 
 }
 
-def getSonarKey(String app) {
+def putSonarKey(Map params, String app) {
 
     def map = [:]
-    map.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    map.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    map.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
+    params.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    params.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    params.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
 
-    def key = map.get(app)
+    if (params.containsKey(app)) {
+        def key = map.get(app)
+        params.put('sonar_login', key)
+        log.debug("sonar_login = ${key}")
+    }
 
-    return key
 }
