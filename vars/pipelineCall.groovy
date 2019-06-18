@@ -21,7 +21,7 @@ def call(Map params) {
 
     log.debug("lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
-    putSonarKey(params, lang)
+    putSonarKey(params, app)
 
     switch (lang) {
         case "java":
