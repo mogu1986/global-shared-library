@@ -47,6 +47,22 @@ def call(Map map) {
                 }
             }
 
+            stage('pro Sonar分析') {
+                steps {
+                    script {
+                        approvalMap = input{
+                            message: '是否要开始Sonar分析检测？',
+                            ok: '确定',
+                            parameters: [
+                                    string(name: 'isOk', defaultValue: "yes", description: '')
+                            ],
+                            submitter: 'admin, admin2, releaseGroup',
+                            submitterParameters: 'APPROVER'
+                        }
+                    }
+                }
+            }
+
             stage('Sonar分析') {
                 steps {
                     script {
