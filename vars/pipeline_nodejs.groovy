@@ -56,7 +56,7 @@ def call(Map map) {
                         wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
                                 [password: "${map.sonar_login}", var: 's1']
                         ]]) {
-                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.sources=."
+                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.sources=${map.sonar_sources}"
                         }
                     }
                 }

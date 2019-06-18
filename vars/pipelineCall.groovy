@@ -40,6 +40,12 @@ def call(Map params) {
 }
 
 def putSonarKey(Map params, String app) {
+
+    if (!params.containsKey('sonar_sources')) {
+        log.debug("sonar : set sonar_sources default value")
+        params.put('sonar_sources', '.')
+    }
+
     log.debug("put ${app} sonar_login")
 
     def sonar = [:]
