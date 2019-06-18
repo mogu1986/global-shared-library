@@ -56,6 +56,7 @@ def call(Map map) {
                 steps {
                     script {
                         zip zipFile: 'Test.zip', dir: "dist"
+                        sh 'sleep 5s'
                         sh 'ls -la'
                     }
                 }
