@@ -40,6 +40,7 @@ def call(Map params) {
 }
 
 def putSonarKey(Map params, String app) {
+    log.debug("put ${app} sonar_login")
 
     def sonar = [:]
     sonar.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
