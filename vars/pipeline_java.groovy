@@ -51,7 +51,7 @@ def call(Map map) {
                 input {
                     message "Should we continue?"
                     ok "Yes, we should."
-                    submitter "admin,anthony"
+                    submitter "admin,gaowei"
                     parameters {
                         string(name: 'PERSON', defaultValue: 'Mr Anthony', description: 'Who should I say hello to?')
                     }
@@ -70,7 +70,7 @@ def call(Map map) {
                             parameters: [
                                     string(name: 'isOk', defaultValue: "yes", description: '')
                             ],
-                            submitter: 'admin, admin2, releaseGroup',
+                            submitter: 'admin, gaowei',
                             submitterParameters: 'APPROVER'
                         )
                     }
