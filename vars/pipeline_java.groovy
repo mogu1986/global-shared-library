@@ -51,7 +51,7 @@ def call(Map map) {
                 steps {
                     script {
                         if ("${DEPLOY_PWD}" == 'gaowei') {
-                            echo "YES YES, ${DEPLOY_PWD}"
+                            echo "YES YES"
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
@@ -68,22 +68,6 @@ def call(Map map) {
                 steps {
                     mvn { settings ->
                         sh "mvn -s ${settings} clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
-                    }
-                }
-            }
-
-            stage('pro Sonar分析') {
-                steps {
-                    script {
-                        approvalMap = input(
-                            message: '是否要开始Sonar分析检测？',
-                            ok: '确定',
-                            parameters: [
-                                    booleanParam(name: 'isSonar', defaultValue: "true", description: '')
-                            ],
-                            submitter: 'admin, gaowei',
-                            submitterParameters: 'APPROVER'
-                        )
                     }
                 }
             }
