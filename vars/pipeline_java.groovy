@@ -37,16 +37,19 @@ def call(Map map) {
         stages {
 
             stage('Example') {
+                when {
+                    expression { return params.BUILD_BRANCH == 'dev'}
+                }
                 input {
-                    message "请输入密钥!"
+                    message "即将发布到测试环境，请输入密钥!"
                     ok "确定"
                     submitter "admin,gaowei"
                     parameters {
-                        string(name: 'PERSON', defaultValue: '', description: '')
+                        string(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                     }
                 }
                 steps {
-                    echo "Hello, ${PERSON}, nice to meet you."
+                    echo "Hello, ${DEPLOY_PWD}, nice to meet you."
                 }
             }
 
