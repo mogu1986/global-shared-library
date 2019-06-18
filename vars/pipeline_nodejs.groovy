@@ -55,7 +55,7 @@ def call(Map map) {
             stage('打zip包') {
                 steps {
                     script {
-                        zip zipFile: 'Test.zip', dir: "dist"
+                        zip zipFile: 'Test.zip', dir: "dist", glob: ''
                         sh 'sleep 5s'
                         sh 'ls -la'
                     }
