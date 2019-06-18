@@ -28,9 +28,6 @@ def call(Map map) {
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
             K8S_CONFIG = credentials('k8s-config')
-
-            // sonar
-            SONAR_URL = "http://sonar.top.mw"
         }
 
         parameters {
