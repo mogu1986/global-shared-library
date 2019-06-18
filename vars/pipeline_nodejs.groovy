@@ -46,7 +46,7 @@ def call(Map map) {
                 steps {
                     sh "yarn install"
                     sh "yarn build"
-                    zip dir: "dist", glob: '', zipFile: 'TEST.zip'
+                    zip dir: "dist", zipFile: 'TEST.zip'
                     sh 'ls -la'
                 }
             }
