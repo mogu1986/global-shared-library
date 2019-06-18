@@ -36,7 +36,7 @@ def call(Map map) {
 
         stages {
 
-            stage('Example') {
+            stage('输入密钥') {
                 when {
                     expression { return params.BUILD_BRANCH == 'dev'}
                 }
@@ -49,7 +49,9 @@ def call(Map map) {
                     }
                 }
                 steps {
-                    echo "Hello, ${DEPLOY_PWD}, nice to meet you."
+                    script {
+                        echo "Hello, ${DEPLOY_PWD}, nice to meet you."
+                    }
                 }
             }
 
