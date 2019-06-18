@@ -38,11 +38,11 @@ def call(Map map) {
 
             stage('Example') {
                 input {
-                    message "Should we continue?"
-                    ok "Yes, we should."
+                    message "请输入密钥!"
+                    ok "确定"
                     submitter "admin,gaowei"
                     parameters {
-                        string(name: 'PERSON', defaultValue: 'Mr Anthony', description: 'Who should I say hello to?')
+                        string(name: 'PERSON', defaultValue: '', description: '')
                     }
                 }
                 steps {
