@@ -47,6 +47,22 @@ def call(Map map) {
                 }
             }
 
+            stages {
+                stage('Example') {
+                    input {
+                        message "Should we continue?"
+                        ok "Yes, we should."
+                        submitter "admin,anthony"
+                        parameters {
+                            string(name: 'PERSON', defaultValue: 'Mr Anthony', description: 'Who should I say hello to?')
+                        }
+                    }
+                    steps {
+                        echo "Hello, ${PERSON}, nice to meet you."
+                    }
+                }
+            }
+
             stage('pro Sonar分析') {
                 steps {
                     script {
@@ -70,7 +86,7 @@ def call(Map map) {
                         wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
                                 [password: "${map.sonar_login}", var: 's1']
                         ]]) {
-                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.projectName=${map.app} -Dsonar.sources=${map.sonar_sources} -Dsonar.java.binaries=${map.sonar_java_binaries}"
+                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.language=java -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.projectName=${map.app} -Dsonar.sources=${map.sonar_sources} -Dsonar.java.binaries=${map.sonar_java_binaries}"
                         }
                     }
                 }
