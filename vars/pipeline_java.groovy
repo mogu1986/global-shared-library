@@ -35,17 +35,6 @@ def call(Map map) {
         }
 
         stages {
-            stage('拉取代码') {
-                steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
-            }
-
-            stage('编译') {
-                steps {
-                    mvn { settings ->
-                        sh "mvn -s ${settings} clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
-                    }
-                }
-            }
 
             stage('Example') {
                 input {
@@ -58,6 +47,18 @@ def call(Map map) {
                 }
                 steps {
                     echo "Hello, ${PERSON}, nice to meet you."
+                }
+            }
+
+            stage('拉取代码') {
+                steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
+            }
+
+            stage('编译') {
+                steps {
+                    mvn { settings ->
+                        sh "mvn -s ${settings} clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
+                    }
                 }
             }
 
