@@ -41,13 +41,13 @@ def call(Map params) {
 
 def putSonarKey(Map params, String app) {
 
-    def map = [:]
-    params.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    params.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    params.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
+    def sonar = [:]
+    sonar.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    sonar.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    sonar.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
 
-    if (map.containsKey(app)) {
-        def key = map.get(app)
+    if (sonar.containsKey(app)) {
+        def key = sonar.get(app)
         params.put('sonar_login', key)
         log.debug("sonar_login = ${key}")
     }
