@@ -45,7 +45,7 @@ def call(Map map) {
                     ok "确定"
                     submitter "admin,gaowei"
                     parameters {
-                        string(name: 'DEPLOY_PWD', defaultValue: '', description: '')
+                        password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                     }
                 }
                 steps {
@@ -72,7 +72,7 @@ def call(Map map) {
                             message: '是否要开始Sonar分析检测？',
                             ok: '确定',
                             parameters: [
-                                    string(name: 'isOk', defaultValue: "yes", description: '')
+                                    booleanParam(name: 'isSonar', defaultValue: "true", description: '')
                             ],
                             submitter: 'admin, gaowei',
                             submitterParameters: 'APPROVER'
