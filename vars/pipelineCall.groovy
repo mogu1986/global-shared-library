@@ -44,7 +44,7 @@ def putSonarKey(Map params, String app) {
 
     def sonar = [:]
     sonar.put('demo', '2632d5e4376ad7aa300fd70e3b8254504573a294')
-    sonar.put('vue', '2632d5e4376ad7aa300fd70e3b8254504573a294')
+    sonar.put('vue', 'd888bbc3a281b67b3dfeac62f790e86dfb4072b0')
     sonar.put('distribution', '9fd1c8b5372f57a5487355c43b91ad956a8cd25c')
 
     if (sonar.containsKey(app)) {
