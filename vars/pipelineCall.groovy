@@ -50,7 +50,6 @@ def putSonarKey(Map params, String app) {
     if (sonar.containsKey(app)) {
         def key = sonar.get(app)
         params.put('sonar_login', key)
-        log.debug("sonar_login = ${key}")
     }
 
 }
