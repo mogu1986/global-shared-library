@@ -50,7 +50,11 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        echo "Hello, ${DEPLOY_PWD}, nice to meet you."
+                        if (${DEPLOY_PWD} != 'gaowei') {
+                            echo "YES YES, ${DEPLOY_PWD}"
+                        } else {
+                            echo "NO NO, ${DEPLOY_PWD}"
+                        }
                     }
                 }
             }
