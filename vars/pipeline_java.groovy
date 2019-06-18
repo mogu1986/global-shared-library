@@ -35,7 +35,7 @@ def call(Map map) {
         }
 
         tools {
-            scanner 'SonarQube Scanner'
+            scanner 'SonarQube Scanner', 'hudson.plugins.sonar.SonarRunnerInstallation'
         }
 
         stages {
