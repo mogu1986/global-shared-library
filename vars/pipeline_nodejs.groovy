@@ -49,7 +49,12 @@ def call(Map map) {
                     sh "yarn install"
                     sh "yarn build"
                     sh 'ls -la'
-                    zip zipFile: 'Test.zip', dir:"${env.WORKSPACE}/${params.ARTIFACT}"
+                }
+            }
+
+            stage('打zip包') {
+                steps {
+                    zip zipFile: 'Test.zip', dir: "dist"
                 }
             }
 
