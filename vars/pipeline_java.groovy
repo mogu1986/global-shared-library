@@ -52,7 +52,7 @@ def call(Map map) {
                     script {
                         if ("${params.DEPLOY_PWD}" != 'gaowei') {
                             log.error('密码错误')
-                            throw new GroovyRuntimeException('密码错误')
+//                            throw new GroovyRuntimeException('密码错误')
                         } else {
                             echo "YES YES, ${DEPLOY_PWD}"
                         }
