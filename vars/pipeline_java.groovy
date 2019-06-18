@@ -56,7 +56,7 @@ def call(Map map) {
                 steps {
                     script {
                         def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                        withSonarQubeEnv(SonarQube Scanner){
+                        withSonarQubeEnv('SonarQube Scanner'){
                             sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw"
                         }
                     }
