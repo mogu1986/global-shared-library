@@ -14,6 +14,8 @@ def call(Map map) {
 //            cron('H/5 * * * *')
 //        }
 
+        triggers { upstream(upstreamProjects: 'jenkins-demo', threshold: hudson.model.Result.SUCCESS) }
+
         options {
             buildDiscarder(logRotator(numToKeepStr: '50'))
             disableConcurrentBuilds()
