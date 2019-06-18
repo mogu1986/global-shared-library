@@ -21,7 +21,7 @@ def call(Map params) {
 
     log.debug("print : lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
-    putSonarKey(params, app)
+    putSonar(params, app)
 
     switch (lang) {
         case "java":
@@ -39,7 +39,7 @@ def call(Map params) {
 
 }
 
-def putSonarKey(Map params, String app) {
+def putSonar(Map params, String app) {
 
     if (!params.containsKey('sonar_sources')) {
         log.debug("sonar : set sonar_sources default value")
