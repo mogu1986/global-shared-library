@@ -53,6 +53,7 @@ def call(Map map) {
                         if ("${params.DEPLOY_PWD}" != 'gaowei') {
                             log.error('密码错误')
                             currentBuild.result = 'FAILURE'
+                            return false
                         } else {
                             echo "YES YES, ${DEPLOY_PWD}"
                         }
