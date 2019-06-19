@@ -23,12 +23,14 @@ def call(Map map) {
         }
 
         environment {
+            APP = "${map.app}"
+            LANG = "${map.lang}"
+            SONAR_SOURCES = "${map.sonar_sources}"
+            SONAR_JAVA_BINARIES = "${map.sonar_java_binaries}"
+            SONAR_LOGIN = credentials("${APP}-sonar-login")
 
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
-
-            APP = "${map.app}"
-            LANG = "${map.lang}"
         }
 
         parameters {

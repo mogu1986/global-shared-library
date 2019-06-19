@@ -17,6 +17,12 @@ def call(Map map) {
         }
 
         environment {
+            APP = "${map.app}"
+            LANG = "${map.lang}"
+            SONAR_SOURCES = "${map.sonar_sources}"
+            SONAR_JAVA_BINARIES = "${map.sonar_java_binaries}"
+            SONAR_LOGIN = credentials("${APP}-sonar-login")
+
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
             K8S_CONFIG = credentials('k8s-config')
@@ -80,10 +86,8 @@ def call(Map map) {
                 steps {
                     script {
                         def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                        wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
-                                [password: "${map.sonar_login}", var: 's1']
-                        ]]) {
-                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.language=java -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.projectName=${map.app} -Dsonar.sources=${map.sonar_sources} -Dsonar.java.binaries=${map.sonar_java_binaries}"
+                        withSonarQubeEnv('sonar'){
+                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN} -Dsonar.projectKey=${env.APP} -Dsonar.projectName=${env.APP} -Dsonar.sources=${env.SONAR_SOURCES} -Dsonar.java.binaries=${env.SONAR_JAVA_BINARIES}"
                         }
                     }
                 }
