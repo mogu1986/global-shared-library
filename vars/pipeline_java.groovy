@@ -39,7 +39,7 @@ def call(Map map) {
             stage('env') {
                 steps {
                     script {
-                        withSonarQubeEnv('SonarQube Scanner'){
+                        withSonarQubeEnv('sonar'){
                             sh 'printenv'
                             sh "${env.SONAR_HOST_URL}"
                         }
