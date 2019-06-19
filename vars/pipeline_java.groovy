@@ -38,7 +38,9 @@ def call(Map map) {
 
             stage('拉取代码') {
                 steps {
-                    sh 'printenv'
+                    script {
+                        sh 'printenv'
+                    }
                 }
             }
 
