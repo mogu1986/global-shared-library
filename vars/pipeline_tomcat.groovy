@@ -50,7 +50,7 @@ def call(Map map) {
                         sh "${inputParams}"
                         if ("${inputParams}" == 'gaowei') {
                             echo "YES YES"
-                            echo "${env.TEST_DEPLOY_PWD}"
+                            echo "${TEST_DEPLOY_PWD}"
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
