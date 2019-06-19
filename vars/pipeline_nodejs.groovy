@@ -98,9 +98,9 @@ def call(Map map) {
                                         hostKeyChecking: false,
                                         colorized: true,
                                         extraVars: [
-                                                lang: "${env.LANG}",
-                                                app: [value: "${env.APP}", hidden: false],
-                                                artifact: "${env.WORKSPACE}/${params.ARTIFACT}/"
+                                            lang: "${env.LANG}",
+                                            app: [value: "${env.APP}", hidden: false],
+                                            artifact: "${env.WORKSPACE}/${params.ARTIFACT}/"
                                         ]
                                 )
                             }

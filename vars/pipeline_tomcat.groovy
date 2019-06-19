@@ -94,14 +94,13 @@ def call(Map map) {
             stage('Sonar分析') {
                 steps {
                     script {
+                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                         withSonarQubeEnv('sonar'){
                             sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN} -Dsonar.projectKey=${env.APP} -Dsonar.projectName=${env.APP} -Dsonar.sources=${env.SONAR_SOURCES} -Dsonar.java.binaries=${env.SONAR_JAVA_BINARIES}"
                         }
                     }
                 }
             }
-
-
 
             stage("ansible自动化部署"){
                 steps{
@@ -117,9 +116,9 @@ def call(Map map) {
                                         hostKeyChecking: false,
                                         colorized: true,
                                         extraVars: [
-                                                lang: "${env.LANG}",
-                                                app: [value: "${env.APP}", hidden: false],
-                                                artifact: "${env.WORKSPACE}/${params.ARTIFACT}"
+                                            lang: "${env.LANG}",
+                                            app: [value: "${env.APP}", hidden: false],
+                                            artifact: "${env.WORKSPACE}/${params.ARTIFACT}"
                                         ]
                                 )
                             }
