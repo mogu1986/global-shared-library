@@ -27,6 +27,7 @@ def call(Map map) {
             SONAR_SOURCES = "${map['sonar.sources']}"
             SONAR_JAVA_BINARIES = "${map['sonar.java.binaries']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
+            inputParam = ''
         }
 
         parameters {
@@ -62,10 +63,9 @@ def call(Map map) {
                                 password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                             ]
                         )
-                        sh "${inputParam}"
+                        log.debug("${inputParam}")
                         if ("${inputParam}" == 'gaowei') {
-                            log.debug("${inputParam}")
-                            echo "${inputParam}"
+                            log.debug("YES YES")
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
