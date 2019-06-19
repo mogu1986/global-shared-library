@@ -33,6 +33,16 @@ def call(Map map) {
 
         stages {
 
+            stage('env') {
+                steps {
+                    script {
+                        withSonarQubeEnv('sonar'){
+                            sh 'printenv'
+                        }
+                    }
+                }
+            }
+
             stage('拉取代码') {
                 steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
             }
