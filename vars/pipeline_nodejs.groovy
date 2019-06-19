@@ -101,11 +101,10 @@ def call(Map map) {
                 }
             }
 
-            stage('打zip包') {
+            stage('打包') {
                 steps {
                     script {
-//                        zip zipFile: 'Test.zip', dir: "dist", glob: ''
-                        sh 'zip -r dist.zip dist'
+                        sh 'tar -cvf html.tar dist'
                         sh 'ls -la'
                     }
                 }
