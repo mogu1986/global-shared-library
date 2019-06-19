@@ -25,7 +25,7 @@ def call(Map map) {
             APP = "${map.app}"
             LANG = "${map.lang}"
             SONAR_SOURCES = "${map['sonar.sources']}"
-            SONAR_JAVA_BINARIES = "${map['sonar_java_binaries']}"
+            SONAR_JAVA_BINARIES = "${map['sonar.java.binaries']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
         }
 

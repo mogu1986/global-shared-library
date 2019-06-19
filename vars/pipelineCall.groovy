@@ -41,7 +41,7 @@ def call(Map params) {
 
 def putSonar(Map params) {
 
-    def keys = ['sonar_sources', 'sonar_java_binaries']
+    def keys = ['sonar.sources', 'sonar.java.binaries']
 
     for (int i = 0; i < keys.size(); i++) {
         def key = keys.get(i)
@@ -50,6 +50,6 @@ def putSonar(Map params) {
         }
     }
 
-    log.debug("sonar_sources=${params['sonar_sources']}")
-    log.debug("sonar_java_binaries=${params['sonar_java_binaries']}")
+    log.debug("sonar.sources = ${params['sonar.sources']}")
+    log.debug("sonar.java.binaries = ${params['sonar.java.binaries']}")
 }
