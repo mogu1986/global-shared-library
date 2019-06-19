@@ -41,7 +41,6 @@ def call(Map map) {
                     script {
                         withSonarQubeEnv('sonar'){
                             sh 'printenv'
-                            sh "${env.SONAR_HOST_URL}"
                         }
                     }
                 }
