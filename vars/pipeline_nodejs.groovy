@@ -75,8 +75,6 @@ def call(Map map) {
                             pre_pwd = "${env.TEST_DEPLOY_PWD}"
                             env_text = '预发'
                         }
-                        log.debug("${pre_pwd}")
-                        log.debug("${env_text}")
 
                         inputParam = input (
                                 message: "即将发布到${env_text}环境，请输入密钥!",
