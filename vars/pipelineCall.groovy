@@ -40,7 +40,7 @@ def call(Map params) {
 }
 
 def putSonar(Map params) {
-    ['sonar_sources', 'sonar_java_binaries'].each{
+    ["sonar_sources", "sonar_java_binaries"].each{
         def key = "${it}"
         if (!params.containsKey(key)) {
             log.debug("sonar : set ${key} .")
