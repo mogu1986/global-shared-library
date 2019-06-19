@@ -36,7 +36,7 @@ def call(Map map) {
 
         stages {
 
-            stage('拉取代码') {
+            stage('env') {
                 steps {
                     script {
                         sh 'printenv'
