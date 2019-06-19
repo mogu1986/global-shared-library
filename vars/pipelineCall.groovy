@@ -21,7 +21,7 @@ def call(Map params) {
 
     log.debug("print : lang = ${lang}, app = ${app}, artifact = ${artifact}")
 
-    putSonar(params, app)
+    putSonar(params)
 
     switch (lang) {
         case "java":
@@ -39,15 +39,18 @@ def call(Map params) {
 
 }
 
-def putSonar(Map params, String app) {
+def putSonar(Map params) {
 
     ['sonar_sources', 'sonar_java_binaries'].each{
-        log.error("==========${it}")
+        if (!params.containsKey("${it}")) {
+            log.debug("sonar : set ${it} .")
+            params.put("${it}", '.')
+        }
     }
-
-    if (!params.containsKey('sonar_sources')) {
-        log.debug("sonar : set sonar_sources default value")
-        params.put('sonar_sources', '.')
-    }
+//
+//    if (!params.containsKey('sonar_sources')) {
+//        log.debug("sonar : set sonar_sources default value")
+//        params.put('sonar_sources', '.')
+//    }
 
 }
