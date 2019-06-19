@@ -35,7 +35,7 @@ def call(Map map) {
 
             stage('输入密钥') {
                 when {
-                    expression { return params.BUILD_BRANCH == 'test'}
+                    expression { return params.BUILD_BRANCH == 'dev'}
                 }
                 steps {
                     script {
