@@ -47,16 +47,10 @@ def putSonar(Map params) {
         def key = keys.get(i)
         if (!params.containsKey(key)) {
             params.put(key, '.')
-        } else {
-            log.debug("包含: ${key}")
+            log.debug("sonar : set ${key} .")
         }
     }
-//
-//    ["sonar_sources", "sonar_java_binaries"].each{
-//        def key = "${it}"
-//        if (!params.containsKey(key)) {
-//            log.debug("sonar : set ${key} .")
-//            params.put(key, '.')
-//        }
-//    }
+
+    log.debug("sonar_sources=${params['sonar_sources']}")
+    log.debug("sonar_java_binaries=${params['sonar_java_binaries']}")
 }
