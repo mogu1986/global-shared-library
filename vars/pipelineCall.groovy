@@ -47,7 +47,6 @@ def putSonar(Map params) {
         def key = keys.get(i)
         if (!params.containsKey(key)) {
             params.put(key, '.')
-            log.debug("sonar : set ${key} .")
         }
     }
 
