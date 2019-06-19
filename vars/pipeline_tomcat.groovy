@@ -33,6 +33,17 @@ def call(Map map) {
 
         stages {
 
+            stage('env') {
+                steps {
+                    script {
+                        withSonarQubeEnv('sonar'){
+                            sh 'printenv'
+                            log.debug("${SONAR_HOST_URL}")
+                        }
+                    }
+                }
+            }
+
             stage('输入密钥') {
                 when {
                     expression { return params.BUILD_BRANCH == 'dev'}
@@ -54,17 +65,6 @@ def call(Map map) {
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
-                        }
-                    }
-                }
-            }
-
-            stage('env') {
-                steps {
-                    script {
-                        withSonarQubeEnv('sonar'){
-                            sh 'printenv'
-                            log.debug("${SONAR_HOST_URL}")
                         }
                     }
                 }
