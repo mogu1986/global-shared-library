@@ -64,7 +64,7 @@ def call(Map map) {
                             ]
                         )
                         log.debug("${inputParam}")
-                        if ("${inputParam}" == 'gaowei') {
+                        if ("${inputParam}" == "${env.TEST_DEPLOY_PWD}") {
                             log.debug("YES YES")
                         } else {
                             log.error('密码错误')
