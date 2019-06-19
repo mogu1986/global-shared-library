@@ -40,11 +40,23 @@ def call(Map params) {
 }
 
 def putSonar(Map params) {
-    ["sonar_sources", "sonar_java_binaries"].each{
-        def key = "${it}"
+
+    def keys = ['sonar_sources', 'sonar_java_binaries']
+
+    for (int i = 0; i < keys.size(); i++) {
+        def key = keys.get(i)
         if (!params.containsKey(key)) {
-            log.debug("sonar : set ${key} .")
             params.put(key, '.')
+        } else {
+            log.debug("包含: ${key}")
         }
     }
+//
+//    ["sonar_sources", "sonar_java_binaries"].each{
+//        def key = "${it}"
+//        if (!params.containsKey(key)) {
+//            log.debug("sonar : set ${key} .")
+//            params.put(key, '.')
+//        }
+//    }
 }
