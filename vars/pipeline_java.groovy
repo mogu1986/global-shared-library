@@ -40,17 +40,18 @@ def call(Map map) {
                 when {
                     expression { return params.BUILD_BRANCH == 'test'}
                 }
-                input {
-                    message "即将发布到测试环境，请输入密钥!"
-                    ok "确定"
-                    submitter "admin,gaowei"
-                    parameters {
-                        password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
-                    }
-                }
                 steps {
                     script {
-                        if ("${DEPLOY_PWD}" == 'gaowei') {
+                        inputParams = input {
+                            message "即将发布到测试环境，请输入密钥!"
+                            ok "确定"
+                            submitter "admin,gaowei"
+                            parameters {
+                                password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
+                            }
+                        }
+                        sh "${inputParams}"
+                        if ("${inputParams}" == 'gaowei') {
                             echo "YES YES"
                         } else {
                             log.error('密码错误')
