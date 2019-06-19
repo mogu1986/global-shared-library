@@ -56,11 +56,20 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        def env_text = params.BUILD_BRANCH == 'dev' ? '开发' : '测试'
+                        def pre_pwd = ''
+                        def env_text = ''
+
+                        if (params.BUILD_BRANCH == 'dev') {
+                            pre_pwd = "${env.DEV_DEPLOY_PWD}"
+                            env_text = '开发'
+                        } else {
+                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
+                            env_text = '测试'
+                        }
                         log.debug("${env_text}")
 
                         inputParam = input (
-                            message: "即将发布到测试环境，请输入密钥!",
+                            message: "即将发布到${env_text}环境，请输入密钥!",
                             ok: "确定",
                             submitter: "admin,gaowei",
                             parameters: [
@@ -68,7 +77,7 @@ def call(Map map) {
                             ]
                         )
                         log.debug("${inputParam}")
-                        if ("${inputParam}" == "${env.TEST_DEPLOY_PWD}") {
+                        if ("${inputParam}" == "${pre_pwd}") {
                             log.debug("密钥正确, 任务将继续执行")
                         } else {
                             throw new GroovyRuntimeException('密码错误')
