@@ -36,6 +36,12 @@ def call(Map map) {
 
         stages {
 
+            stage('拉取代码') {
+                steps {
+                    sh 'printenv'
+                }
+            }
+
             stage('输入密钥') {
                 when {
                     expression { return params.BUILD_BRANCH == 'test'}
