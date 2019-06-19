@@ -28,8 +28,8 @@ def call(Map map) {
             SONAR_JAVA_BINARIES = "${map['sonar.java.binaries']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
 
-            DEV_DEPLOY_PWD = credentials("DEV_DEPLOY_PWD")
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
+            UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
             inputParam = ''
         }
 
@@ -65,10 +65,10 @@ def call(Map map) {
                         def env_text = ''
 
                         if (params.BUILD_BRANCH == 'test') {
-                            pre_pwd = "${env.DEV_DEPLOY_PWD}"
+                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
                             env_text = '测试'
                         } else {
-                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
+                            pre_pwd = "${env.UAT_DEPLOY_PWD}"
                             env_text = '预发'
                         }
 

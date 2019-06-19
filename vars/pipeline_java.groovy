@@ -27,8 +27,8 @@ def call(Map map) {
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
             K8S_CONFIG = credentials('k8s-config')
 
-            DEV_DEPLOY_PWD = credentials("DEV_DEPLOY_PWD")
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
+            UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
             inputParam = ''
         }
 
@@ -62,10 +62,10 @@ def call(Map map) {
                         def env_text = ''
 
                         if (params.BUILD_BRANCH == 'test') {
-                            pre_pwd = "${env.DEV_DEPLOY_PWD}"
+                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
                             env_text = '测试'
                         } else {
-                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
+                            pre_pwd = "${env.UAT_DEPLOY_PWD}"
                             env_text = '预发'
                         }
 
