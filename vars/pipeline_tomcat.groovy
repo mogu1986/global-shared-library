@@ -33,6 +33,32 @@ def call(Map map) {
 
         stages {
 
+            stage('输入密钥') {
+                when {
+                    expression { return params.BUILD_BRANCH == 'test'}
+                }
+                steps {
+                    script {
+                        inputParams = input {
+                            message "即将发布到测试环境，请输入密钥!"
+                            ok "确定"
+                            submitter "admin,gaowei"
+                            parameters {
+                                password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
+                            }
+                        }
+                        sh "${inputParams}"
+                        if ("${inputParams}" == 'gaowei') {
+                            echo "YES YES"
+                            echo "${env.TEST_DEPLOY_PWD}"
+                        } else {
+                            log.error('密码错误')
+                            throw new GroovyRuntimeException('密码错误')
+                        }
+                    }
+                }
+            }
+
             stage('env') {
                 steps {
                     script {
