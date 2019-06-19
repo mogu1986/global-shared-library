@@ -38,6 +38,7 @@ def call(Map map) {
                     script {
                         withSonarQubeEnv('sonar'){
                             sh 'printenv'
+                            log.debug("${SONAR_HOST_URL}")
                         }
                     }
                 }
