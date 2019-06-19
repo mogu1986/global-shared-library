@@ -46,4 +46,5 @@ def putSonar(Map params) {
             params.put("${it}", '.')
         }
     }
+    params.put('sonar_sources', '.')
 }
