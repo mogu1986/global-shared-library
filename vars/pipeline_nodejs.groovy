@@ -54,6 +54,31 @@ def call(Map map) {
                 }
             }
 
+            stage('输入密钥') {
+                when {
+                    expression { return params.BUILD_BRANCH == 'dev'}
+                }
+                steps {
+                    script {
+                        inputParam = input (
+                                message: "即将发布到测试环境，请输入密钥!",
+                                ok: "确定",
+                                submitter: "admin,gaowei",
+                                parameters: [
+                                        password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
+                                ]
+                        )
+                        log.debug("${inputParam}")
+                        if ("${inputParam}" == "${env.TEST_DEPLOY_PWD}") {
+                            log.debug("YES YES")
+                        } else {
+                            log.error('密码错误')
+                            throw new GroovyRuntimeException('密码错误')
+                        }
+                    }
+                }
+            }
+
             stage('编译') {
                 steps {
                     sh "yarn install"
