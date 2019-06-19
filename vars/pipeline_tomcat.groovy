@@ -64,7 +64,7 @@ def call(Map map) {
                         )
                         sh "${inputParam}"
                         if ("${inputParam}" == 'gaowei') {
-                            echo "YES YES"
+                            log.debug("${inputParam}")
                             echo "${inputParam}"
                         } else {
                             log.error('密码错误')
