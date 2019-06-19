@@ -151,7 +151,7 @@ def call(Map map) {
                 }
             }
 
-            stage('发布k8s') {
+            stage('kubernetes部署') {
                 steps {
                     script {
                         docker.image('harbor.top.mw/library/kubectl:1.7.6').inside() {
