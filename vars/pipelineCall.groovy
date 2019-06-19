@@ -41,10 +41,10 @@ def call(Map params) {
 
 def putSonar(Map params) {
     ['sonar_sources', 'sonar_java_binaries'].each{
-        if (!params.containsKey("${it}")) {
-            log.debug("sonar : set ${it} .")
-            params.put("${it}", '.')
+        def key = "${it}"
+        if (!params.containsKey(key)) {
+            log.debug("sonar : set ${key} .")
+            params.put(key, '.')
         }
     }
-    params.put('sonar_sources', '.')
 }
