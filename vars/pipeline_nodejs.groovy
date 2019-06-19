@@ -102,8 +102,9 @@ def call(Map map) {
 
             stage('打包') {
                 steps {
-                    script {
-                        sh 'tar -cvf html.tar dist'
+                    dir("${params.ARTIFACT}"){
+                        sh 'pwd'
+                        sh 'tar -cvf html.tar *'
                         sh 'ls -la'
                     }
                 }
