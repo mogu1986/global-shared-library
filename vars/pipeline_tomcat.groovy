@@ -53,8 +53,14 @@ def call(Map map) {
             }
 
             stage('输入密钥') {
+//                when {
+//                    expression { return params.BUILD_BRANCH == 'dev'}
+//                }
                 when {
-                    expression { return params.BUILD_BRANCH == 'dev'}
+                    anyOf {
+                        environment name: 'BUILD_BRANCH', value: 'dev'
+                        environment name: 'BUILD_BRANCH', value: 'test'
+                    }
                 }
                 steps {
                     script {
