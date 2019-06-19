@@ -24,6 +24,7 @@ def call(Map map) {
         environment {
             APP = "${map.app}"
             LANG = "${map.lang}"
+            SONAR_LOGIN = credentials('demo-sonar-login')
         }
 
         parameters {
@@ -39,6 +40,7 @@ def call(Map map) {
                         withSonarQubeEnv('sonar'){
                             sh 'printenv'
                             log.debug("${SONAR_HOST_URL}")
+                            log.debug("${SONAR_LOGIN}")
                         }
                     }
                 }
