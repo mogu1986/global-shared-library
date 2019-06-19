@@ -11,20 +11,12 @@ def call(Map map) {
         }
 
         options {
-            // 保留1个工程
             buildDiscarder(logRotator(numToKeepStr: '10'))
-            // 不允许同时执行多次
             disableConcurrentBuilds()
-            // 整个pipeline超时时间
             timeout(time: 20, unit: 'MINUTES')
         }
 
         environment {
-            // harbor 相关配置
-            HARBOR = "harbor.top.mw"
-            HARBOR_URL = "http://${HARBOR}"
-            HARBOR_CRED = credentials('harbor')
-
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
             K8S_CONFIG = credentials('k8s-config')
@@ -63,6 +55,7 @@ def call(Map map) {
                         sh "${inputParams}"
                         if ("${inputParams}" == 'gaowei') {
                             echo "YES YES"
+                            echo "${env.TEST_DEPLOY_PWD}"
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')

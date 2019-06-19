@@ -14,7 +14,7 @@ def call(Map map) {
 //            cron('H/5 * * * *')
 //        }
 
-        triggers { upstream(upstreamProjects: 'jenkins-demo', threshold: hudson.model.Result.SUCCESS) }
+//        triggers { upstream(upstreamProjects: 'jenkins-demo', threshold: hudson.model.Result.SUCCESS) }
 
         options {
             buildDiscarder(logRotator(numToKeepStr: '50'))
@@ -23,8 +23,6 @@ def call(Map map) {
         }
 
         environment {
-//            HARBOR = "harbor.top.mw"
-//            HARBOR_URL = "http://${HARBOR}"
 
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
