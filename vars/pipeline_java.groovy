@@ -29,7 +29,6 @@ def call(Map map) {
 
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
             UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
-            inputParam = ''
         }
 
         parameters {
