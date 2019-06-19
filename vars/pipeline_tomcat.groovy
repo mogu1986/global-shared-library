@@ -54,18 +54,18 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        input (
+                        inputParam = input (
                             message: "即将发布到测试环境，请输入密钥!",
                             ok: "确定",
                             submitter: "admin,gaowei",
-                            parameters: {
+                            parameters: [
                                 password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
-                            }
+                            ]
                         )
-                        sh "${DEPLOY_PWD}"
-                        if ("${DEPLOY_PWD}" == 'gaowei') {
+                        sh "${inputParam}"
+                        if ("${inputParam}" == 'gaowei') {
                             echo "YES YES"
-                            echo "${TEST_DEPLOY_PWD}"
+                            echo "${inputParam}"
                         } else {
                             log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
