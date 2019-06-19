@@ -53,13 +53,10 @@ def call(Map map) {
             }
 
             stage('输入密钥') {
-//                when {
-//                    expression { return params.BUILD_BRANCH == 'dev'}
-//                }
                 when {
                     anyOf {
-                        environment name: 'BUILD_BRANCH', value: 'dev'
                         environment name: 'BUILD_BRANCH', value: 'test'
+                        environment name: 'BUILD_BRANCH', value: 'uat'
                     }
                 }
                 steps {
@@ -67,12 +64,12 @@ def call(Map map) {
                         def pre_pwd = ''
                         def env_text = ''
 
-                        if (params.BUILD_BRANCH == 'dev') {
+                        if (params.BUILD_BRANCH == 'test') {
                             pre_pwd = "${env.DEV_DEPLOY_PWD}"
-                            env_text = '开发'
+                            env_text = '测试'
                         } else {
                             pre_pwd = "${env.TEST_DEPLOY_PWD}"
-                            env_text = '测试'
+                            env_text = '预发'
                         }
                         log.debug("${pre_pwd}")
                         log.debug("${env_text}")
@@ -85,7 +82,6 @@ def call(Map map) {
                                 password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                             ]
                         )
-                        log.debug("${inputParam}")
                         if ("${inputParam}" == "${pre_pwd}") {
                             log.debug("密钥正确, 任务将继续执行")
                         } else {

@@ -26,6 +26,10 @@ def call(Map map) {
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
             K8S_CONFIG = credentials('k8s-config')
+
+            DEV_DEPLOY_PWD = credentials("DEV_DEPLOY_PWD")
+            TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
+            inputParam = ''
         }
 
         parameters {
@@ -44,25 +48,40 @@ def call(Map map) {
                 }
             }
 
+
             stage('输入密钥') {
                 when {
-                    expression { return params.BUILD_BRANCH == 'dev'}
+                    anyOf {
+                        environment name: 'BUILD_BRANCH', value: 'test'
+                        environment name: 'BUILD_BRANCH', value: 'uat'
+                    }
                 }
                 steps {
                     script {
+                        def pre_pwd = ''
+                        def env_text = ''
+
+                        if (params.BUILD_BRANCH == 'test') {
+                            pre_pwd = "${env.DEV_DEPLOY_PWD}"
+                            env_text = '测试'
+                        } else {
+                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
+                            env_text = '预发'
+                        }
+                        log.debug("${pre_pwd}")
+                        log.debug("${env_text}")
+
                         inputParam = input (
-                                message: "即将发布到测试环境，请输入密钥!",
+                                message: "即将发布到${env_text}环境，请输入密钥!",
                                 ok: "确定",
                                 submitter: "admin,gaowei",
                                 parameters: [
                                         password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                                 ]
                         )
-                        log.debug("${inputParam}")
-                        if ("${inputParam}" == "${env.TEST_DEPLOY_PWD}") {
-                            log.debug("YES YES")
+                        if ("${inputParam}" == "${pre_pwd}") {
+                            log.debug("密钥正确, 任务将继续执行")
                         } else {
-                            log.error('密码错误')
                             throw new GroovyRuntimeException('密码错误')
                         }
                     }
