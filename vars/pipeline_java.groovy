@@ -38,7 +38,7 @@ def call(Map map) {
 
             stage('env') {
                 steps {
-                    script {
+                    withSonarQubeEnv('SonarQube Scanner'){
                         sh 'printenv'
                     }
                 }
