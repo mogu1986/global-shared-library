@@ -54,14 +54,14 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        input {
+                        input (
                             message "即将发布到测试环境，请输入密钥!"
                             ok "确定"
                             submitter "admin,gaowei"
                             parameters {
                                 password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
                             }
-                        }
+                        )
                         sh "${DEPLOY_PWD}"
                         if ("${DEPLOY_PWD}" == 'gaowei') {
                             echo "YES YES"
