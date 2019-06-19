@@ -23,8 +23,8 @@ def call(Map map) {
         }
 
         environment {
-            HARBOR = "harbor.top.mw"
-            HARBOR_URL = "http://${HARBOR}"
+//            HARBOR = "harbor.top.mw"
+//            HARBOR_URL = "http://${HARBOR}"
 
             // 容器相关配置
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
@@ -43,6 +43,16 @@ def call(Map map) {
         }
 
         stages {
+
+            stage('env') {
+                steps {
+                    script {
+                        withSonarQubeEnv('sonar'){
+                            sh 'printenv'
+                        }
+                    }
+                }
+            }
 
             stage('编译') {
                 steps {
