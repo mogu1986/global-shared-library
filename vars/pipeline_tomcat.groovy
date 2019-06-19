@@ -26,7 +26,7 @@ def call(Map map) {
             LANG = "${map.lang}"
             SONAR_SOURCES = "${map.sonar_sources}"
             SONAR_JAVA_BINARIES = "${map.sonar_java_binaries}"
-            SONAR_LOGIN = credentials("demo-sonar-login")
+            SONAR_LOGIN = credentials("${APP}-sonar-login")
         }
 
         parameters {
@@ -102,18 +102,7 @@ def call(Map map) {
                 }
             }
 
-//            stage('Sonar分析') {
-//                steps {
-//                    script {
-//                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-//                        wrap([$class: 'MaskPasswordsBuildWrapper', varPasswordPairs:[
-//                                [password: "${map.sonar_login}", var: 's1']
-//                        ]]) {
-//                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=http://sonar.top.mw -Dsonar.login=${map.sonar_login} -Dsonar.projectKey=${map.app} -Dsonar.projectName=${map.app} -Dsonar.sources=${map.sonar_sources} -Dsonar.java.binaries=${map.sonar_java_binaries}"
-//                        }
-//                    }
-//                }
-//            }
+
 
             stage("ansible自动化部署"){
                 steps{
