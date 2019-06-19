@@ -27,6 +27,8 @@ def call(Map map) {
             SONAR_SOURCES = "${map['sonar.sources']}"
             SONAR_JAVA_BINARIES = "${map['sonar.java.binaries']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
+
+            DEV_DEPLOY_PWD = credentials("DEV_DEPLOY_PWD")
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
             inputParam = ''
         }
@@ -66,6 +68,7 @@ def call(Map map) {
                             pre_pwd = "${env.TEST_DEPLOY_PWD}"
                             env_text = '测试'
                         }
+                        log.debug("${pre_pwd}")
                         log.debug("${env_text}")
 
                         inputParam = input (
