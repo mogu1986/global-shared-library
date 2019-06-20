@@ -116,7 +116,7 @@ def call(Map map) {
                 }
             }
 
-            stage("ansible部署"){
+            stage("Ansible部署"){
                 steps{
                     script{
                         docker.image('harbor.top.mw/library/ansible:centos7').inside() {
