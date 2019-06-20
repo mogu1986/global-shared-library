@@ -61,7 +61,7 @@ def call(Map map) {
                     }
                 }
                 steps {
-                    timeout(60) {
+                    timeout(time: 1, unit: 'MINUTES') {
                         script {
                             def pre_pwd = ''
                             def env_text = ''
