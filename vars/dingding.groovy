@@ -10,7 +10,13 @@ def call (String text, String url) {
                         }
                     }
                 """
-    def response = httpRequest requestBody: patchOrg, contentType: 'APPLICATION_JSON_UTF8', httpMode: 'POST', url: "https://oapi.dingtalk.com/robot/send?access_token=006db0f1009885a2f6af320c3391f5b911a37f24e395e78cd79a134ab714de48"
+
+    def token = "${DEV_DingDing_TOKEN}"
+    if (params.BUILD_BRANCH == 'test') {
+        token = "${DEV_DingDing_TOKEN}"
+    }
+
+    def response = httpRequest requestBody: patchOrg, contentType: 'APPLICATION_JSON_UTF8', httpMode: 'POST', url: "https://oapi.dingtalk.com/robot/send?access_token=${token}"
     println('Status: '+response.status)
     println('Response: '+response.content)
 }
