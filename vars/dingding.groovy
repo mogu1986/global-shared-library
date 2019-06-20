@@ -13,7 +13,7 @@ def call (String text, String url) {
 
     def token = "${DEV_DingDing_TOKEN}"
     if (params.BUILD_BRANCH == 'test') {
-        token = "${DEV_DingDing_TOKEN}"
+        token = "${UAT_DingDing_TOKEN}"
     }
 
     def response = httpRequest requestBody: patchOrg, contentType: 'APPLICATION_JSON_UTF8', httpMode: 'POST', url: "https://oapi.dingtalk.com/robot/send?access_token=${token}"
