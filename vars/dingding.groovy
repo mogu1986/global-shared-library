@@ -12,10 +12,10 @@ def call (boolean success) {
         {
             "msgtype": "link", 
             "link": {
-                "title": "app : $JOB_BASE_NAME",
-                "text": "构建名称：${APP}
-        构建编号：${BUILD_NUMBER}
-        构建结果：${text}", 
+                "title": "app : ${APP}",
+                "text": "构建名称：$JOB_BASE_NAME
+构建编号：${BUILD_NUMBER}
+构建结果：${text}", 
                 "picUrl": "${url}", 
                 "messageUrl": "${BUILD_URL}"
             }
