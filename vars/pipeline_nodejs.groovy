@@ -38,23 +38,19 @@ def call(Map map) {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
             string(name: 'ARTIFACT', defaultValue: "${map.artifact}", description: 'yarn build生成的包路径，相对于workspace')
         }
-//
-//        tools {
-//            nodejs 'NODEJS'
-//        }
 
         stages {
 
-//            stage('env') {
-//                steps {
-//                    script {
-//                        withSonarQubeEnv('sonar'){
-//                            sh 'printenv'
-//                            log.debug("${SONAR_HOST_URL}")
-//                        }
-//                    }
-//                }
-//            }
+            stage('env') {
+                steps {
+                    script {
+                        withSonarQubeEnv('sonar'){
+                            sh 'printenv'
+                            log.debug("${SONAR_HOST_URL}")
+                        }
+                    }
+                }
+            }
 
 
             stage('输入密钥') {
@@ -93,18 +89,10 @@ def call(Map map) {
                     }
                 }
             }
-//
-//            stage('编译') {
-//                steps {
-//                    sh "yarn install"
-//                    sh "yarn build"
-//                }
-//            }
 
             stage('编译') {
                 steps {
-                    nodejs(nodeJSInstallationName: 'NODEJS') {
-                        sh 'printenv'
+                    nodejs(nodeJSInstallationName: 'NODEJS2') {
                         sh "yarn install"
                         sh "yarn build"
                     }
