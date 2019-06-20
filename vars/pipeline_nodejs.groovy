@@ -97,16 +97,13 @@ def call(Map map) {
                 steps {
                     sh "yarn install"
                     sh "yarn build"
-                    sh 'ls -la'
                 }
             }
 
             stage('打包') {
                 steps {
                     dir("${params.ARTIFACT}"){
-                        sh 'pwd'
                         sh "tar -zcvf ${TAR_NAME} *"
-                        sh 'ls -la'
                     }
                 }
             }
