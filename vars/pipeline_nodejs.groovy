@@ -142,6 +142,16 @@ def call(Map map) {
                 }
             }
 
+            stage('钉钉通知') {
+                steps{
+                    script{
+                        def response = httpRequest "http://www.baidu.com"
+                        println('Status: '+response.status)
+                        println('Response: '+response.content)
+                    }
+                }
+            }
+
         }
 
         post {
