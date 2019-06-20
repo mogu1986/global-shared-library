@@ -45,16 +45,16 @@ def call(Map map) {
 
         stages {
 
-            stage('env') {
-                steps {
-                    script {
-                        withSonarQubeEnv('sonar'){
-                            sh 'printenv'
-                            log.debug("${SONAR_HOST_URL}")
-                        }
-                    }
-                }
-            }
+//            stage('env') {
+//                steps {
+//                    script {
+//                        withSonarQubeEnv('sonar'){
+//                            sh 'printenv'
+//                            log.debug("${SONAR_HOST_URL}")
+//                        }
+//                    }
+//                }
+//            }
 
 
             stage('输入密钥') {
