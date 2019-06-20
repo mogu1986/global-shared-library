@@ -1,6 +1,6 @@
 def call (boolean success) {
 
-    def text = success ? '构建成功' : '构建失败'
+    def text = success ? 'SUCCESS' : 'FAILURE'
     def url = success ? 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png' : 'http://www.iconsdb.com/icons/preview/soylent-red/x-mark-3-xxl.png'
     def token = "${DEV_DingDing_TOKEN}"
 
@@ -13,7 +13,9 @@ def call (boolean success) {
             "msgtype": "link", 
             "link": {
                 "title": "app : $JOB_BASE_NAME",
-                "text": "[${JOB_BASE_NAME}: #${BUILD_NUMBER}] ${text}",
+                "text": "构建名称：${APP}
+        构建编号：${BUILD_NUMBER}
+        构建结果：${text}", 
                 "picUrl": "${url}", 
                 "messageUrl": "${BUILD_URL}"
             }
