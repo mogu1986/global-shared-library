@@ -144,7 +144,7 @@ def call(Map map) {
 
             stage('钉钉通知') {
                 steps{
-                    dingding('构建成功', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png')
+                    sh 'dingding'
                 }
             }
 
@@ -152,6 +152,10 @@ def call(Map map) {
 
         post {
             always {cleanWs()}
+
+            success {
+                dingding('构建成功', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png')
+            }
         }
     }
 }
