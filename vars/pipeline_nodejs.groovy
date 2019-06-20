@@ -27,7 +27,7 @@ def call(Map map) {
             LANG = "${map.lang}"
             SONAR_SOURCES = "${map['sonar.sources']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
-            TAR_NAME = "html.tar.gz"
+            TAR_NAME = "dist.tar.gz"
 
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
             UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
