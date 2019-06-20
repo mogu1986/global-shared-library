@@ -65,19 +65,10 @@ def call(Map map) {
                 steps {
                     timeout(time: 1, unit: 'MINUTES') {
                         script {
-                            def pre_pwd = ''
-                            def env_text = ''
-
-                            if (params.BUILD_BRANCH == 'test') {
-                                pre_pwd = "${env.TEST_DEPLOY_PWD}"
-                                env_text = '测试'
-                            } else {
-                                pre_pwd = "${env.UAT_DEPLOY_PWD}"
-                                env_text = '预发'
-                            }
+                            def pre_pwd = params.BUILD_BRANCH == 'test' ? "${env.TEST_DEPLOY_PWD}" : "${env.UAT_DEPLOY_PWD}"
 
                             inputParam = input (
-                                    message: "即将发布到${env_text}环境，请输入密钥：",
+                                    message: "即将发布到 ${params.BUILD_BRANCH} 环境，请输入密钥：",
                                     ok: "确定",
                                     submitter: "admin,gaowei",
                                     parameters: [
