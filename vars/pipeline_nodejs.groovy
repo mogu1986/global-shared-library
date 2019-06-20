@@ -20,6 +20,7 @@ def call(Map map) {
             buildDiscarder(logRotator(numToKeepStr: '50'))
             disableConcurrentBuilds()
             timeout(time: 10, unit: 'MINUTES')
+            timestamps()
         }
 
         environment {
