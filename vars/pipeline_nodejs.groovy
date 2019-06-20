@@ -77,7 +77,7 @@ def call(Map map) {
                         }
 
                         inputParam = input (
-                                message: "即将发布到${env_text}环境，请输入密钥!",
+                                message: "即将发布到${env_text}环境，请输入密钥:",
                                 ok: "确定",
                                 submitter: "admin,gaowei",
                                 parameters: [
