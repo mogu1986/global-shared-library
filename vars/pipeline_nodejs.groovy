@@ -27,7 +27,7 @@ def call(Map map) {
             LANG = "${map.lang}"
             SONAR_SOURCES = "${map['sonar.sources']}"
             SONAR_LOGIN = credentials("${APP}-sonar-login")
-            TAR_NAME = "html.tar"
+            TAR_NAME = "html.tar.gz"
 
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
             UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
@@ -105,7 +105,7 @@ def call(Map map) {
                 steps {
                     dir("${params.ARTIFACT}"){
                         sh 'pwd'
-                        sh "tar -cvf ${TAR_NAME} *"
+                        sh "tar -zcvf ${TAR_NAME} *"
                         sh 'ls -la'
                     }
                 }
