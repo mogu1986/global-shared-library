@@ -38,10 +38,10 @@ def call(Map map) {
             choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
             string(name: 'ARTIFACT', defaultValue: "${map.artifact}", description: 'yarn build生成的包路径，相对于workspace')
         }
-
-        tools {
-            nodejs 'NODEJS'
-        }
+//
+//        tools {
+//            nodejs 'NODEJS'
+//        }
 
         stages {
 
@@ -93,11 +93,21 @@ def call(Map map) {
                     }
                 }
             }
+//
+//            stage('编译') {
+//                steps {
+//                    sh "yarn install"
+//                    sh "yarn build"
+//                }
+//            }
 
             stage('编译') {
                 steps {
-                    sh "yarn install"
-                    sh "yarn build"
+                    nodejs(nodeJSInstallationName: 'NODEJS') {
+                        sh 'printenv'
+                        sh "yarn install"
+                        sh "yarn build"
+                    }
                 }
             }
 
