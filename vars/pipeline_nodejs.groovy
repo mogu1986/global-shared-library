@@ -61,30 +61,32 @@ def call(Map map) {
                     }
                 }
                 steps {
-                    script {
-                        def pre_pwd = ''
-                        def env_text = ''
+                    timeout(60) {
+                        script {
+                            def pre_pwd = ''
+                            def env_text = ''
 
-                        if (params.BUILD_BRANCH == 'test') {
-                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
-                            env_text = '测试'
-                        } else {
-                            pre_pwd = "${env.UAT_DEPLOY_PWD}"
-                            env_text = '预发'
-                        }
+                            if (params.BUILD_BRANCH == 'test') {
+                                pre_pwd = "${env.TEST_DEPLOY_PWD}"
+                                env_text = '测试'
+                            } else {
+                                pre_pwd = "${env.UAT_DEPLOY_PWD}"
+                                env_text = '预发'
+                            }
 
-                        inputParam = input (
-                                message: "即将发布到${env_text}环境，请输入密钥:",
-                                ok: "确定",
-                                submitter: "admin,gaowei",
-                                parameters: [
-                                        password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
-                                ]
-                        )
-                        if ("${inputParam}" == "${pre_pwd}") {
-                            log.debug("密钥正确, 任务将继续执行")
-                        } else {
-                            throw new GroovyRuntimeException('密码错误')
+                            inputParam = input (
+                                    message: "即将发布到${env_text}环境，请输入密钥:",
+                                    ok: "确定",
+                                    submitter: "admin,gaowei",
+                                    parameters: [
+                                            password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
+                                    ]
+                            )
+                            if ("${inputParam}" == "${pre_pwd}") {
+                                log.debug("密钥正确, 任务将继续执行")
+                            } else {
+                                throw new GroovyRuntimeException('密码错误')
+                            }
                         }
                     }
                 }
