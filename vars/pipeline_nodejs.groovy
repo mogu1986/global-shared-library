@@ -144,7 +144,9 @@ def call(Map map) {
 
             stage('钉钉通知') {
                 steps{
-                    log.debug('dingding')
+                    script {
+                        log.debug('dingding')
+                    }
                 }
             }
 
