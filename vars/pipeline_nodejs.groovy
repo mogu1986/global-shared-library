@@ -158,11 +158,11 @@ def call(Map map) {
             always {cleanWs()}
 
             success {
-                dingding('构建成功', 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png')
+                dingding(true)
             }
 
             failure {
-                dingding('构建失败', 'http://www.iconsdb.com/icons/preview/soylent-red/x-mark-3-xxl.png')
+                dingding(false)
             }
         }
     }
