@@ -1,4 +1,4 @@
-def call (boolean success) {
+def call (boolean success, String zuser) {
 
     def text = success ? 'SUCCESS' : 'FAILURE'
     def url = success ? 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png' : 'http://www.iconsdb.com/icons/preview/soylent-red/x-mark-3-xxl.png'
