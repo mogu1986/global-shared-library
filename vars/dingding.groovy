@@ -15,7 +15,7 @@ def call (boolean success) {
                 "title": "${APP} 构建${text}",
                 "text": "构建名称：$JOB_BASE_NAME
 构建编号：${BUILD_NUMBER}
-构建结果：${text}", 
+构建人：${BUILD_USER}", 
                 "picUrl": "${url}", 
                 "messageUrl": "${BUILD_URL}"
             }
