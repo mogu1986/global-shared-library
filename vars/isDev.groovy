@@ -1,4 +1,4 @@
 def call() {
-    def flag = ${params.BUILD_BRANCH} == 'dev'
+    def flag = "${params.BUILD_BRANCH}" == 'dev'
     return flag
 }
