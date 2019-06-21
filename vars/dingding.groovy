@@ -4,7 +4,7 @@ def call (boolean success) {
     def url = success ? 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png' : 'http://www.iconsdb.com/icons/preview/soylent-red/x-mark-3-xxl.png'
     def token = "${DEV_DingDing_TOKEN}"
 
-    if (params.BUILD_BRANCH == 'test') {
+    if (isTest()) {
         token = "${UAT_DingDing_TOKEN}"
     }
 
@@ -22,7 +22,12 @@ def call (boolean success) {
         }
     """
 
-    def response = httpRequest requestBody: patchOrg, contentType: 'APPLICATION_JSON_UTF8', httpMode: 'POST', url: "https://oapi.dingtalk.com/robot/send?access_token=${token}"
+    def response = httpRequest(
+            url: "https://oapi.dingtalk.com/robot/send?access_token=${token}",
+            httpMode: 'POST',
+            requestBody: patchOrg,
+            contentType: 'APPLICATION_JSON_UTF8'
+    )
     println('Status: '+response.status)
     println('Response: '+response.content)
 }
