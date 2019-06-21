@@ -7,21 +7,21 @@ def call (boolean success) {
     if (isTest()) {
         token = "${UAT_DingDing_TOKEN}"
     }
-
-    def patchOrg = """
+    wrap([$class: 'BuildUser']) {
+        def patchOrg = """
         {
             "msgtype": "link", 
             "link": {
                 "title": "${APP} 构建${text}",
                 "text": "构建名称：$JOB_BASE_NAME
 构建编号：${BUILD_NUMBER}
-构建结果：${text}", 
+构建结果：${$BUILD_USER}", 
                 "picUrl": "${url}", 
                 "messageUrl": "${BUILD_URL}"
             }
         }
     """
-
+    }
     def response = httpRequest(
             url: "https://oapi.dingtalk.com/robot/send?access_token=${token}",
             httpMode: 'POST',
