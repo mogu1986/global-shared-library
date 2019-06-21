@@ -87,7 +87,7 @@ def call(Map map) {
 
             stage('编译') {
                 steps {
-                    nodejs(nodeJSInstallationName: 'NODEJS') {
+                    nodejs('NODEJS') {
                         sh "yarn install"
                         sh "yarn build"
                     }
