@@ -30,6 +30,8 @@ def call(Map map) {
 
             TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
             UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
+            DEV_DingDing_TOKEN = credentials("dev-DingDing-TOKEN")
+            UAT_DingDing_TOKEN = credentials("uat-DingDing-TOKEN")
         }
 
         parameters {
