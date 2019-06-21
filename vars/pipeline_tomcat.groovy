@@ -32,6 +32,8 @@ def call(Map map) {
             UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
             DEV_DingDing_TOKEN = credentials("dev-DingDing-TOKEN")
             UAT_DingDing_TOKEN = credentials("uat-DingDing-TOKEN")
+
+            zuser = ''
         }
 
         parameters {
@@ -40,6 +42,17 @@ def call(Map map) {
         }
 
         stages {
+
+            stage('test') {
+                steps {
+                    wrap([$class: 'BuildUser']) {
+                        echo "full name is $BUILD_USER"
+                        echo "user id is $BUILD_USER_ID"
+                        echo "user email is $BUILD_USER_EMAIL"
+                        zuser = "$BUILD_USER"
+                    }
+                }
+            }
 
             stage('env') {
                 steps {

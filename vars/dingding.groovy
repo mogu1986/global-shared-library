@@ -7,10 +7,7 @@ def call (boolean success) {
     if (isTest()) {
         token = "${UAT_DingDing_TOKEN}"
     }
-    def zuser = ''
-    wrap([$class: 'BuildUser']) {
-        zuser = "${$BUILD_USER}"
-    }
+
     def patchOrg = """
         {
             "msgtype": "link", 
