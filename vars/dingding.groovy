@@ -13,9 +13,9 @@ def call (boolean success, String zuser) {
             "msgtype": "link", 
             "link": {
                 "title": "${APP} 构建${text}",
-                "text": "构建人：${zuser}
-构建名称：$JOB_BASE_NAME
-构建编号：${BUILD_NUMBER}", 
+                "text": "构建名称：$JOB_BASE_NAME
+构建编号：${BUILD_NUMBER}
+构建人：${zuser}", 
                 "picUrl": "${url}", 
                 "messageUrl": "${BUILD_URL}"
             }
