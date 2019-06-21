@@ -43,6 +43,16 @@ def call(Map map) {
 
         stages {
 
+            stage('test') {
+                steps {
+                    wrap([$class: 'BuildUser']) {
+                        echo "full name is $BUILD_USER"
+                        echo "user id is $BUILD_USER_ID"
+                        echo "user email is $BUILD_USER_EMAIL"
+                    }
+                }
+            }
+
             stage('env') {
                 steps {
                     script {
