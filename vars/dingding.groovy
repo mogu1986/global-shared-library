@@ -5,6 +5,7 @@ def call (boolean success, String zuser) {
     def token = "${DEV_DingDing_TOKEN}"
 
     if (isTest()) {
+        log.debug('currend is test env')
         token = "${UAT_DingDing_TOKEN}"
     }
 
