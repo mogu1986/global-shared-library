@@ -159,11 +159,15 @@ def call(Map map) {
             always {cleanWs()}
 
             success {
-                dingding(true)
+                wrap([$class: 'BuildUser']) {
+                    dingding(true, "$BUILD_USER_ID")
+                }
             }
 
             failure {
-                dingding(false)
+                wrap([$class: 'BuildUser']) {
+                    dingding(false, "$BUILD_USER_ID")
+                }
             }
         }
     }

@@ -182,13 +182,13 @@ def call(Map map) {
 
             success {
                 wrap([$class: 'BuildUser']) {
-                    dingding(true, "$BUILD_USER")
+                    dingding(true, "$BUILD_USER_ID")
                 }
             }
 
             failure {
                 wrap([$class: 'BuildUser']) {
-                    dingding(false, "$BUILD_USER")
+                    dingding(false, "$BUILD_USER_ID")
                 }
             }
         }
