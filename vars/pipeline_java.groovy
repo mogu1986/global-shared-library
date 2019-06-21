@@ -176,6 +176,14 @@ def call(Map map) {
 
         post {
             always {cleanWs()}
+
+            success {
+                dingding(true)
+            }
+
+            failure {
+                dingding(false)
+            }
         }
 
     }

@@ -138,15 +138,27 @@ def call(Map map) {
                 }
             }
 
-            stage("邮件通知") {
-                steps {
-                    configFileProvider(
-                            [configFile(fileId: "html-global-settings", variable: 'body')]) {
-                        emailext(
-                                to: 'gaowei@fengjinggroup.com',
-                                subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
-                                body: readFile("${body}")
-                        )
+            stage('通知') {
+                failFast true
+                parallel {
+                    stage('钉钉通知') {
+                        steps{
+                            script {
+                                log.debug('dingding')
+                            }
+                        }
+                    }
+                    stage("邮件通知") {
+                        steps {
+                            configFileProvider(
+                                    [configFile(fileId: "html-global-settings", variable: 'body')]) {
+                                emailext(
+                                        to: 'gaowei@fengjinggroup.com',
+                                        subject: "Running Pipeline: ${currentBuild.fullDisplayName}",
+                                        body: readFile("${body}")
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -155,6 +167,14 @@ def call(Map map) {
 
         post {
             always {cleanWs()}
+
+            success {
+                dingding(true)
+            }
+
+            failure {
+                dingding(false)
+            }
         }
 
     }
