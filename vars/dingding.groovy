@@ -4,8 +4,8 @@ def call (boolean success, String zuser) {
     def url = success ? 'http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png' : 'http://www.iconsdb.com/icons/preview/soylent-red/x-mark-3-xxl.png'
     def token = "${DEV_DingDing_TOKEN}"
 
-    if (isTest()) {
-        log.debug('currend is test env')
+    if (isSit()) {
+        log.debug('currend is sit env')
         token = "${UAT_DingDing_TOKEN}"
     }
 

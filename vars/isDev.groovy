@@ -1,5 +1,5 @@
 def call() {
-    def flag = "${params.BUILD_BRANCH}" == 'dev'
-    log.debug("is dev_envd ${flag}")
+    def flag = "${params.BUILD_ENV}" == 'mit'
+    log.debug("is mit ${flag}")
     return flag
 }

@@ -1,10 +1,9 @@
 /*
-*  Description: java pipeline as code
+*  Description: jfb_ec_wx 定制的 pipeline，需要先打wx-web，然后把文件放入webapps下面
 *  Date: 2019-04-23 16:14
-*  Author: wei.gao
+*  Author: gaowei
 */
 def call(Map map) {
-
     pipeline {
 
         agent {
@@ -13,8 +12,7 @@ def call(Map map) {
 
         options {
             buildDiscarder(logRotator(numToKeepStr: '50'))
-            disableConcurrentBuilds()
-            timeout(time: 10, unit: 'MINUTES')
+            timeout(time: 30, unit: 'MINUTES')
         }
 
         tools {
@@ -32,7 +30,7 @@ def call(Map map) {
         }
 
         parameters {
-            gitParameter(branchFilter: 'origin/(.*)', defaultValue: 'dev', name: 'BUILD_BRANCH', type: 'PT_BRANCH', description: '请选择分支:', useRepository: "${map.git}")
+            choice(name: 'BUILD_BRANCH', choices: 'dev\nrelease', description: '请选择分支:')
             choice(name: 'BUILD_ENV', choices: 'mit\nsit\nuat', description: '请选择部署环境:')
         }
 
@@ -55,21 +53,12 @@ def call(Map map) {
                 }
             }
 
-            stage('拉取代码') {
+            stage('wx') {
                 steps {
                     script {
                         log.debug("选择的分支: ${params.BUILD_BRANCH}")
                         log.debug("部署环境: ${params.BUILD_ENV}")
-
-                        env.PROJECT_NAME = "${env.APP}"
-
-                        def flag = map.get('group').startsWith("jfb_ec")
-                        if (flag) {
-                            log.debug("jfb_ec 开头")
-                            env.PROJECT_NAME = "jfb_ec_${env.APP}"
-                        }
-
-                        log.debug("project.name = ${env.PROJECT_NAME}")
+                        env.PROJECT_NAME = "jfb_ec_wx"
                         git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: map.git
                     }
                 }
@@ -88,11 +77,49 @@ def call(Map map) {
                 }
             }
 
-            stage('编译打包') {
+            stage('h5-wechat') {
                 steps {
                     script {
-                        configFileProvider([configFile(fileId: "maven-global-settings", variable: 'MAVEN_SETTINGS')]) {
-                            sh "mvn -s $MAVEN_SETTINGS clean package -B -Dfile.encoding=UTF-8 -P${env.APP} -Dmaven.test.skip=true -U"
+                        sh "git clone -b ${params.BUILD_BRANCH} http://gitlab.shixhlocal.com/bizplatform/h5-wechat.git"
+                    }
+                }
+            }
+
+            stage('编译h5-wechat') {
+                steps {
+                    script {
+                        dir('h5-wechat') {
+                            nodejs('NODEJS') {
+                                sh "cnpm install"
+                                sh "cnpm run wxsh-${params.BUILD_ENV}"
+                            }
+                        }
+                    }
+                }
+            }
+
+            stage('嵌入wx') {
+                steps {
+                    script {
+                        echo "开始覆盖"
+                        sh 'ls -lh'
+                        sh 'cp -rp h5-wechat/dist /tmp/'
+                        sh 'rm -rf jfb_ec_wx/src/main/webapp/css'
+                        sh 'rm -rf jfb_ec_wx/src/main/webapp/js'
+                        sh 'rm -rf jfb_ec_wx/src/main/webapp/image'
+                        sh 'cp -rp h5-wechat/dist/wxsh/css jfb_ec_wx/src/main/webapp/'
+                        sh 'cp -rp h5-wechat/dist/wxsh/js jfb_ec_wx/src/main/webapp/'
+                        sh 'cp -rp h5-wechat/dist/wxsh/image jfb_ec_wx/src/main/webapp/'
+                        sh 'cp -rp h5-wechat/dist/wxsh/* jfb_ec_wx/src/main/webapp/WEB-INF/webpage/'
+                    }
+                }
+            }
+
+            stage('编译wx') {
+                steps {
+                    script {
+                        configFileProvider([configFile(fileId: "maven-global-settings", variable: 'MAVEN_SETTINGS_ENV')]) {
+                            sh "mvn -s ${MAVEN_SETTINGS_ENV} clean package -Pwx -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
                         }
                     }
                 }
@@ -107,17 +134,17 @@ def call(Map map) {
                                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.shixhlocal.com/devops/jenkins-ansible-playbooks.git']]])
                             ansiColor('xterm') {
                                 ansiblePlaybook(
-                                        playbook: "playbook_${env.LANG}.yml",
-                                        inventory: "hosts/${params.BUILD_ENV}.ini",
-                                        hostKeyChecking: false,
-                                        colorized: true,
-                                        extraVars: [
-                                                lang    : "${env.LANG}",
-                                                app     : [value: "${env.APP}", hidden: false],
-                                                appPort : [value: "${env.APP_PORT}", hidden: false],
-                                                env     : [value: "${params.BUILD_ENV}", hidden: false],
-                                                artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
-                                        ]
+                                    playbook: "playbook_tomcat.yml",
+                                    inventory: "hosts/${params.BUILD_ENV}.ini",
+                                    hostKeyChecking: false,
+                                    colorized: true,
+                                    extraVars: [
+                                        lang    : "tomcat",
+                                        app     : [value: "${env.APP}", hidden: false],
+                                        appPort : [value: "${env.APP_PORT}", hidden: false],
+                                        env     : [value: "${params.BUILD_ENV}", hidden: false],
+                                        artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
+                                    ]
                                 )
                             }
                         }
@@ -134,7 +161,7 @@ def call(Map map) {
                 steps {
                     script {
                         def response = httpRequest(
-                            url: "${env.JENKINS_URL}/view/PRD/job/aliyun-sync-war/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}",
+                            url: "${env.JENKINS_URL}/view/PRD/job/aliyun-sync-war-h5web/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}",
                             httpMode: 'GET'
                         )
                         println('Status: '+response.status)
@@ -152,7 +179,7 @@ def call(Map map) {
                 steps {
                     script {
                         def response = httpRequest(
-                            url: "${env.JENKINS_URL}/view/PRD/job/qcloud-sync-war/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}",
+                            url: "${env.JENKINS_URL}/view/PRD/job/qcloud-sync-war-h5web/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}",
                             httpMode: 'GET'
                         )
                         println('Status: '+response.status)

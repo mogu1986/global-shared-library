@@ -7,11 +7,11 @@ def call(Map map) {
     pipeline {
 
         agent {
-            label 'master'
+            label 'swarm'
         }
 
         options {
-            buildDiscarder(logRotator(numToKeepStr: '10'))
+            buildDiscarder(logRotator(numToKeepStr: '50'))
             disableConcurrentBuilds()
             timeout(time: 20, unit: 'MINUTES')
         }
@@ -19,110 +19,111 @@ def call(Map map) {
         environment {
             APP = "${map.app}"
             LANG = "${map.lang}"
-            SONAR_SOURCES = "${map['sonar.sources']}"
-            SONAR_JAVA_BINARIES = "${map['sonar.java.binaries']}"
-            SONAR_LOGIN = credentials("${APP}-sonar-login")
+            APP_PORT = "${map.appPort}"
+            GROUP= "${map.group}"
+            ARTIFACT = "${map.artifact}"
+            NS = "${map.namespace}"
 
-            // 容器相关配置
+            PORTAL_TOKEN = credentials("portal")
+
             IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
-            K8S_CONFIG = credentials('k8s-config')
-
-            TEST_DEPLOY_PWD = credentials("TEST_DEPLOY_PWD")
-            UAT_DEPLOY_PWD = credentials("UAT_DEPLOY_PWD")
         }
 
         parameters {
-            choice(name: 'BUILD_BRANCH', choices: 'dev\ntest', description: '请选择部署的环境')
+            choice(name: 'BUILD_BRANCH', choices: 'dev\nrelease', description: '请选择分支:')
+            choice(name: 'BUILD_ENV', choices: 'mit\nsit\nuat', description: '请选择部署环境:')
         }
 
         stages {
 
-            stage('env') {
-                steps {
-                    script {
-                        withSonarQubeEnv('sonar'){
-                            sh 'printenv'
-                        }
-                    }
-                }
-            }
-
-
-            stage('输入密钥') {
+            stage('认证') {
                 when {
                     anyOf {
-                        environment name: 'BUILD_BRANCH', value: 'test'
-                        environment name: 'BUILD_BRANCH', value: 'uat'
+                        environment name: 'BUILD_ENV', value: 'sit'
+                        environment name: 'BUILD_ENV', value: 'uat'
                     }
                 }
                 steps {
-                    script {
-                        def pre_pwd = ''
-                        def env_text = ''
-
-                        if (params.BUILD_BRANCH == 'test') {
-                            pre_pwd = "${env.TEST_DEPLOY_PWD}"
-                            env_text = '测试'
-                        } else {
-                            pre_pwd = "${env.UAT_DEPLOY_PWD}"
-                            env_text = '预发'
-                        }
-
-                        inputParam = input (
-                                message: "即将发布到${env_text}环境，请输入密钥:",
-                                ok: "确定",
-                                submitter: "admin,gaowei",
-                                parameters: [
-                                        password(name: 'DEPLOY_PWD', defaultValue: '', description: '')
-                                ]
-                        )
-                        if ("${inputParam}" == "${pre_pwd}") {
-                            log.debug("密钥正确, 任务将继续执行")
-                        } else {
-                            throw new GroovyRuntimeException('密码错误')
-                        }
-                    }
+                    auth()
                 }
             }
 
             stage('拉取代码') {
-                steps { git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: GIT_URL }
+                steps {
+                    script {
+                        log.debug("选择的分支: ${params.BUILD_BRANCH}")
+                        log.debug("部署环境: ${params.BUILD_ENV}")
+                        new com.sxh.AppMeta().getJavaOpts(map, "${env.BUILD_ENV}")
+                        log.debug("App 元数据: ${map}")
+                        git branch: params.BUILD_BRANCH, credentialsId: 'gitlab', url: map.git
+                    }
+                }
+            }
+            
+            stage('拉取配置') {
+                when {
+                    expression {
+                        return isBinaryConfig(map)
+                    }
+                }
+                steps {
+                    script {
+                        sh "git clone -b ${params.BUILD_ENV} http://gitlab.shixhlocal.com/devops/config.git"
+                    }
+                }
             }
 
             stage('编译') {
                 steps {
-                    mvn { settings ->
-                        sh "mvn -s ${settings} clean deploy -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
+                    script {
+                        mvn { settings ->
+                            def cmd = isDev() ? 'package' : 'deploy'
+                            sh "mvn -s ${settings} clean ${cmd} -B -Dfile.encoding=UTF-8 -Dmaven.test.skip=true -U"
+                        }
                     }
                 }
             }
 
             stage('Sonar分析') {
+                when {
+                    expression {
+                        return !isDev() && false
+                    }
+                }
                 steps {
                     script {
-                        def sonarHome = tool name: 'SonarQube Scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                         withSonarQubeEnv('sonar'){
-                            sh "${sonarHome}/bin/sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_LOGIN} -Dsonar.projectKey=${env.APP} -Dsonar.projectName=${env.APP} -Dsonar.sources=${env.SONAR_SOURCES} -Dsonar.java.binaries=${env.SONAR_JAVA_BINARIES}"
+                            docker.image('mercuriete/sonar-scanner:3.2.0.1227').inside('-v /root/.sonar:/root/.sonar') {
+                                sh "sonar-scanner -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN}  -Dsonar.projectKey=${env.APP} -Dsonar.projectName=${env.APP} -Dsonar.sources=. -Dsonar.java.binaries=."
+                            }
                         }
                     }
                 }
             }
 
             stage('单元测试') {
+                when {
+                    expression {
+                        return false
+                    }
+                }
                 steps {
-                    echo "未开放"
+                    allure([
+                        disabled: false,
+                        includeProperties: false,
+                        jdk: '',
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'output/allure']]
+                    ])
                 }
             }
 
             stage('自动化测试') {
-                when {
-                    expression { return params.BUILD_BRANCH == 'test'}
-                }
                 failFast true
                 parallel {
                     stage('UI自动化测试') {
                         steps {
-                            echo "并行一"
+                            echo "并行1"
                         }
                     }
                     stage('性能自动化测试') {
@@ -141,53 +142,96 @@ def call(Map map) {
             stage('推送镜像') {
                 steps {
                     script {
-                        docker.withRegistry("$HARBOR_URL", "harbor") {
-                            def app = docker.build("$IMAGE_NAME")
-                            app.push()
-                            app.push('latest')
+                        def isBinaryConfig = isBinaryConfig(map)
+                        def dockerfile = isBinaryConfig ? 'dockerfile_config' : 'dockerfile'
+
+                        configFileProvider([configFile(fileId: dockerfile, variable: 'DOCKER_FILE')]) {
+                            docker.withRegistry("$HARBOR_URL", "harbor") {
+                                def args = "--no-cache --build-arg JAR_PATH=${ARTIFACT} --build-arg JAR_NAME=${APP} "
+                                if (isBinaryConfig) {
+                                    args = args + "--build-arg CONFIG_PATH=config/${env.APP}"
+                                }
+                                log.debug("args = ${args}")
+
+                                def app = docker.build("$IMAGE_NAME", "${args} -f ${DOCKER_FILE} .")
+                                app.push()
+                            }
                         }
                         sh "docker rmi -f $IMAGE_NAME"
                     }
                 }
             }
 
-            stage('kubernetes部署') {
-                steps {
-                    script {
-                        docker.image('harbor.top.mw/library/kubectl:1.7.6').inside() {
-                            sh "mkdir -p ~/.kube"
-                            sh "echo ${K8S_CONFIG} | base64 -d > ~/.kube/config"
+            stage("K8S部署") {
+                when {
+                    expression {
+                        return isSit()
+                    }
+                }
+                steps{
+                    configFileProvider([configFile(fileId: "${params.BUILD_ENV}-config", variable: 'config')]) {
+                        sh "docker run --rm -v ${config}:/.kube/config ${HARBOR}/library/kubectl:1.15 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
+                    }
+                }
+            }
 
-                            sh "sed -i 's|{image}|${IMAGE_NAME}|g' kubernetes.yml"
-                            sh "sed -i 's|{namespaces}|${params.BUILD_BRANCH}|g' kubernetes.yml"
-
-                            sh "kubectl apply -f kubernetes.yml --namespace=${params.BUILD_BRANCH}"
+            stage("Ansible部署") {
+                when {
+                    expression {
+                        return !isSit()
+                    }
+                }
+                steps{
+                    script{
+                        docker.image('harbor.shixhlocal.com/library/ansible:centos7').inside() {
+                            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
+                                      extensions: [], submoduleCfg: [],
+                                      userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.shixhlocal.com/devops/jenkins-ansible-playbooks.git']]])
+                            ansiColor('xterm') {
+                                ansiblePlaybook(
+                                    playbook: "playbook_${env.LANG}.yml",
+                                    inventory: "hosts/${params.BUILD_ENV}.ini",
+                                    hostKeyChecking: false,
+                                    colorized: true,
+                                    extraVars: [
+                                        lang: "${env.LANG}",
+                                        app: [value: "${env.APP}", hidden: false],
+                                        group: [value: "${env.GROUP}", hidden: false],
+                                        appPort: [value: "${env.APP_PORT}", hidden: false],
+                                        javaOpts: "${map.javaOpts}",
+                                        portArgs: "${map.portArgs}",
+                                        env: [value: "${params.BUILD_ENV}", hidden: false],
+                                        artifact: "${env.IMAGE_NAME}"
+                                    ]
+                                )
+                            }
                         }
                     }
                 }
             }
 
-            stage("邮件通知") {
+            stage('同步阿里云') {
+                when {
+                    expression {
+                        return isUat()
+                    }
+                }
                 steps {
-                    notify('gaowei@fengjinggroup.com')
+                    script {
+                        def response = httpRequest(
+                            url: "${env.JENKINS_URL}/view/PRD/job/aliyun-harbor/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}&imageId=${BUILD_ID}",
+                            httpMode: 'GET'
+                        )
+                        println('Status: '+response.status)
+                        println('Response: '+response.content)
+                    }
                 }
             }
+
         }
 
         post {
             always {cleanWs()}
-
-            success {
-                wrap([$class: 'BuildUser']) {
-                    dingding(true, "$BUILD_USER_ID")
-                }
-            }
-
-            failure {
-                wrap([$class: 'BuildUser']) {
-                    dingding(false, "$BUILD_USER_ID")
-                }
-            }
         }
 
     }

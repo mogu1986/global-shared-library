@@ -19,6 +19,7 @@ def call(Map map) {
         environment {
             APP = "${map.app}"
             LANG = "${map.lang}"
+            ARTIFACT = "${map.artifact}"
 
             PORTAL_TOKEN = credentials("portal")
 
@@ -26,7 +27,7 @@ def call(Map map) {
         }
 
         parameters {
-            choice(name: 'BUILD_BRANCH', choices: 'dev\nrelease', description: '请选择分支:')
+            gitParameter(branchFilter: 'origin/(.*)', defaultValue: 'dev', name: 'BUILD_BRANCH', type: 'PT_BRANCH', description: '请选择分支:', useRepository: "${map.git}")
             choice(name: 'BUILD_ENV', choices: 'mit\nsit\nuat', description: '请选择部署环境:')
         }
 
@@ -73,10 +74,9 @@ def call(Map map) {
             stage('编译') {
                 steps {
                     nodejs('NODEJS') {
-                        sh "npm install --registry=http://10.50.4.3:4873 sxh-vue-common --save"
-                        sh "npm install"
+//                        sh "npm install -g cnpm --registry=https://registry.npm.taobao.org"
+                        sh "cnpm install --unsafe-perm"
                         sh "npm run ${params.BUILD_ENV}"
-                        sh "ls -lh"
                     }
                 }
             }
@@ -95,7 +95,7 @@ def call(Map map) {
                 }
             }
 
-            stage("Ansible部署"){
+            stage("Ansible部署") {
                 steps{
                     script{
                         docker.image('harbor.shixhlocal.com/library/ansible:centos7').inside() {
@@ -104,12 +104,12 @@ def call(Map map) {
                                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.shixhlocal.com/devops/jenkins-ansible-playbooks.git']]])
                             ansiColor('xterm') {
                                 ansiblePlaybook(
-                                    playbook: "playbook_${env.LANG}.yml",
+                                    playbook: "playbook_nodejs.yml",
                                     inventory: "hosts/${params.BUILD_ENV}.ini",
                                     hostKeyChecking: false,
                                     colorized: true,
                                     extraVars: [
-                                        lang: "${env.LANG}",
+                                        lang: "nodejs",
                                         app: [value: "${env.APP}", hidden: false],
                                         env: [value: "${params.BUILD_ENV}", hidden: false],
                                         portArgs: "${map.portArgs}",
@@ -131,11 +131,8 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        def url = "${env.JENKINS_URL}/view/PRD/job/aliyun-harbor-nodejs/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}"
-                        log.debug(" url = ${url}")
-
                         def response = httpRequest(
-                            url: "${url}",
+                            url: "${env.JENKINS_URL}/view/PRD/job/aliyun-harbor-nodejs/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}",
                             httpMode: 'GET'
                         )
                         println('Status: '+response.status)
@@ -144,7 +141,7 @@ def call(Map map) {
                 }
             }
 
-
         }
+
     }
 }

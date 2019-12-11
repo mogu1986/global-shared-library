@@ -63,19 +63,9 @@ def call(Map map) {
                 steps {
                     script {
                         sh "git clone -b ${params.BUILD_ENV} http://gitlab.shixhlocal.com/devops/config.git sxh_config"
+                        sh "mv sxh_config/${env.APP}/Dockerfile ./"
                         sh "mv sxh_config/${env.APP}/nginx.conf ./"
                         sh "rm -rf sxh_config"
-                        sh "ls -lh"
-                    }
-                }
-            }
-
-            stage('编译') {
-                steps {
-                    nodejs('NODEJS') {
-                        sh "npm install --registry=http://10.50.4.3:4873 sxh-vue-common --save"
-                        sh "npm install"
-                        sh "npm run ${params.BUILD_ENV}"
                         sh "ls -lh"
                     }
                 }
@@ -85,10 +75,8 @@ def call(Map map) {
                 steps {
                     script {
                         docker.withRegistry("$HARBOR_URL", "harbor") {
-                            configFileProvider([configFile(fileId: 'dockerfile_nodejs', variable: 'DOCKER_FILE')]) {
-                                def app = docker.build("$IMAGE_NAME", "--no-cache -f ${DOCKER_FILE} .")
-                                app.push()
-                            }
+                            def app = docker.build("$IMAGE_NAME", "--no-cache .")
+                            app.push()
                         }
                         sh "docker rmi -f $IMAGE_NAME"
                     }
@@ -104,12 +92,12 @@ def call(Map map) {
                                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.shixhlocal.com/devops/jenkins-ansible-playbooks.git']]])
                             ansiColor('xterm') {
                                 ansiblePlaybook(
-                                    playbook: "playbook_${env.LANG}.yml",
+                                    playbook: "playbook_nodejs.yml",
                                     inventory: "hosts/${params.BUILD_ENV}.ini",
                                     hostKeyChecking: false,
                                     colorized: true,
                                     extraVars: [
-                                        lang: "${env.LANG}",
+                                        lang: "nodejs",
                                         app: [value: "${env.APP}", hidden: false],
                                         env: [value: "${params.BUILD_ENV}", hidden: false],
                                         portArgs: "${map.portArgs}",
@@ -131,12 +119,12 @@ def call(Map map) {
                 }
                 steps {
                     script {
-                        def url = "${env.JENKINS_URL}/view/PRD/job/aliyun-harbor-nodejs/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}"
+                        def url = "${env.JENKINS_URL}/view/PRD/job/aliyun-harbor-html/buildWithParameters?token=${env.PORTAL_TOKEN}&app=${env.APP}"
                         log.debug(" url = ${url}")
 
                         def response = httpRequest(
-                            url: "${url}",
-                            httpMode: 'GET'
+                                url: "${url}",
+                                httpMode: 'GET'
                         )
                         println('Status: '+response.status)
                         println('Response: '+response.content)
