@@ -30,12 +30,6 @@ def call(String app="${JOB_NAME}", String lang = "${JOB_NAME}") {
         case "aliyun-harbor":
             pipeline_harbor(params)
             break
-        case "nodejsyqm":
-            pipeline_nodejsyqm(params)
-            break
-        case "wx":
-            pipeline_wx(params)
-            break
         case "h5web":
             pipeline_h5web(params)
             break
