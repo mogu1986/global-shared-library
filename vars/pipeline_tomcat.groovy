@@ -112,11 +112,11 @@ def call(Map map) {
                                         hostKeyChecking: false,
                                         colorized: true,
                                         extraVars: [
-                                                lang    : "${env.LANG}",
-                                                app     : [value: "${env.APP}", hidden: false],
-                                                appPort : [value: "${env.APP_PORT}", hidden: false],
-                                                env     : [value: "${params.BUILD_ENV}", hidden: false],
-                                                artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
+                                            lang    : "${env.LANG}",
+                                            app     : [value: "${env.APP}", hidden: false],
+                                            appPort : [value: "${env.APP_PORT}", hidden: false],
+                                            env     : [value: "${params.BUILD_ENV}", hidden: false],
+                                            artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
                                         ]
                                 )
                             }
