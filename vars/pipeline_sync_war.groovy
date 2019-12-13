@@ -86,7 +86,6 @@ def call(Map map) {
             stage('同步阿里云') {
                 steps {
                     script {
-
                         def remote = [:]
                         remote.name = 'root'
                         remote.host = "${ssh_ops01_USR}"

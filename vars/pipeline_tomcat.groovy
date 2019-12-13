@@ -107,17 +107,17 @@ def call(Map map) {
                                       userRemoteConfigs: [[credentialsId: 'gitlab', url: 'http://gitlab.shixhlocal.com/devops/jenkins-ansible-playbooks.git']]])
                             ansiColor('xterm') {
                                 ansiblePlaybook(
-                                        playbook: "playbook_${env.LANG}.yml",
-                                        inventory: "hosts/${params.BUILD_ENV}.ini",
-                                        hostKeyChecking: false,
-                                        colorized: true,
-                                        extraVars: [
-                                            lang    : "${env.LANG}",
-                                            app     : [value: "${env.APP}", hidden: false],
-                                            appPort : [value: "${env.APP_PORT}", hidden: false],
-                                            env     : [value: "${params.BUILD_ENV}", hidden: false],
-                                            artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
-                                        ]
+                                    playbook: "playbook_${env.LANG}.yml",
+                                    inventory: "hosts/${params.BUILD_ENV}.ini",
+                                    hostKeyChecking: false,
+                                    colorized: true,
+                                    extraVars: [
+                                        lang    : "${env.LANG}",
+                                        app     : [value: "${env.APP}", hidden: false],
+                                        appPort : [value: "${env.APP_PORT}", hidden: false],
+                                        env     : [value: "${params.BUILD_ENV}", hidden: false],
+                                        artifact: "${env.WORKSPACE}/${env.PROJECT_NAME}/${env.ARTIFACT}"
+                                    ]
                                 )
                             }
                         }
