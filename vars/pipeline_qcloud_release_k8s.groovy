@@ -38,12 +38,6 @@ def call(Map map) {
                 }
             }
 
-            stage('清空目录') {
-                steps {
-                    deleteDir()
-                }
-            }
-
             stage('发布') {
                 steps {
                     script {
@@ -79,6 +73,10 @@ def call(Map map) {
                 }
             }
 
+        }
+
+        post {
+            always {cleanWs()}
         }
 
     }

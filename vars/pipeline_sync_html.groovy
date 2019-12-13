@@ -103,8 +103,11 @@ def call(Map map) {
                     }
                 }
             }
-
-
         }
+
+        post {
+            always {cleanWs()}
+        }
+
     }
 }

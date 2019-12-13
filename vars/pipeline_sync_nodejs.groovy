@@ -23,12 +23,6 @@ def call(Map map) {
 
         stages {
 
-            stage('清空目录') {
-                steps {
-                    deleteDir()
-                }
-            }
-
             stage('拉取代码') {
                 steps {
                     script {
@@ -116,5 +110,10 @@ def call(Map map) {
             }
 
         }
+
+        post {
+            always {cleanWs()}
+        }
+
     }
 }

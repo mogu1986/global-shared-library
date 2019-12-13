@@ -22,7 +22,7 @@ def call(Map map) {
         }
 
         parameters {
-            choice(name: 'app', choices: 'admin\nbaseapi\ncallback\ngongmall\nimg\npay\npurchase\nsupplyer\nwx\nyqm_admin\nyqm_baseapi\nyqm_mq\nyqm_xxl\ndinghuo_admin\ndinghuo_api\ndinghuo_baseapi\ndinghuo_mq\ndinghuo_xxl\nh5-web', description: '请选择应用:')
+            choice(name: 'app', choices: 'admin\nh5-web', description: '请选择应用:')
         }
 
         stages {
@@ -72,9 +72,8 @@ def call(Map map) {
                             def appMeta = new com.sxh.AppMeta().getMeta("${params.app}")
                             log.debug("${params.app} 查找结果 = ${appMeta}")
                             appMeta.lang = "tomcat"
-                            def UPLOAD_TAR_NAME = "ROOT.war"
 
-                            def pushShell = "ansible-playbook playbook_${appMeta.lang}.yml -i hosts/prod.ini -e lang=${appMeta.lang} -e app=${params.app} -e appPort=8080 -e env=prod -e artifact=/data/local/prd_test/${params.app}/${UPLOAD_TAR_NAME}"
+                            def pushShell = "ansible-playbook playbook_${appMeta.lang}.yml -i hosts/prod.ini -e lang=${appMeta.lang} -e app=${params.app} -e appPort=8080 -e env=prod -e artifact=/data/local/prd_test/${params.app}/ROOT.war"
 
                             sshCommand remote: remote, command: "rm -rf /opt/ansible/*"
                             sshPut remote: remote, from: "${env.TAR_NAME}", into: "/opt/ansible"
@@ -85,6 +84,10 @@ def call(Map map) {
                 }
             }
 
+        }
+
+        post {
+            always {cleanWs()}
         }
 
     }
