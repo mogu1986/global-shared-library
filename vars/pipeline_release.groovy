@@ -33,7 +33,7 @@ def call(Map map) {
                         input (
                             message: "即将发布到 ${params.app} 应用，发布或者停止",
                             ok: "确定",
-                            submitter: "chengmangmang@shixh.com,yangyin@shixh.com,gaowei@shixh.com"
+                            submitter: "gaowei@shixh.com"
                         )
                     }
                 }
