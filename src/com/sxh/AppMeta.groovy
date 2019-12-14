@@ -24,7 +24,7 @@ class AppMeta {
                     group: 'web',
                     appPort: 20002,
                     artifact: 'distribution-service/target/distribution-service.jar',
-                    git: 'http://gitlab.shixhlocal.com/gaowei/distribution.git',
+                    git: 'https://github.com/mogu1986/distribution.git',
                     javaOpts: [
                             'mit': '-Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -Ddubbo.registry.address=zookeeper://10.50.4.207:2181 -Ddubbo.protocol.port=20880 -Dserver.port=8080',
                             'sit': '-Duser.timezone=Asia/wh -Djava.security.egd=file:/dev/./urandom -Ddubbo.registry.address=zookeeper://10.50.4.207:2181 -Ddubbo.protocol.port=20880 -Dserver.port=8080',
