@@ -164,7 +164,7 @@ def call(Map map) {
 
             stage("K8S部署") {
                 steps{
-                    configFileProvider([configFile(fileId: "${params.BUILD_ENV}-config", variable: 'config')]) {
+                    configFileProvider([configFile(fileId: "sit-config", variable: 'config')]) {
                         sh "docker run --rm -v ${config}:/.kube/config harbor.shixhlocal.com/library/kubectl:1.15 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
                     }
                 }
