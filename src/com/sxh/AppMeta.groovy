@@ -20,7 +20,7 @@ class AppMeta {
             [
                     app: "distribution",
                     lang: 'java',
-                    namespace: 'ops',
+                    namespace: 'default',
                     group: 'web',
                     appPort: 20002,
                     artifact: 'distribution-service/target/distribution-service.jar',
