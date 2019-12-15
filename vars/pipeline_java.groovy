@@ -166,7 +166,7 @@ def call(Map map) {
                 steps{
                     configFileProvider([configFile(fileId: "${params.BUILD_ENV}-config", variable: 'config')]) {
                         sh "cat ${config}"
-                        sh "docker run --rm -v ${config}:/.kube/config harbor.shixhlocal.com/library/kubectl:1.15 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
+                        sh "docker run --rm -v ${config}:/.kube/config harbor.jq.cn/library/kubectl:1.15 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
                     }
                 }
             }
