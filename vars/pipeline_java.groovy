@@ -31,7 +31,7 @@ def call(Map map) {
 
         parameters {
             choice(name: 'BUILD_BRANCH', choices: 'master\ndev\nrelease', description: '请选择分支:')
-            choice(name: 'BUILD_ENV', choices: 'mit\nsit\nuat', description: '请选择部署环境:')
+            choice(name: 'BUILD_ENV', choices: 'dev\nsit\nuat', description: '请选择部署环境:')
         }
 
         stages {
