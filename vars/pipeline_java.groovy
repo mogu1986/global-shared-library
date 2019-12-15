@@ -165,7 +165,7 @@ def call(Map map) {
             stage("K8S部署") {
                 steps{
                     configFileProvider([configFile(fileId: "${params.BUILD_ENV}-config", variable: 'config')]) {
-                        sh "docker run --rm -v ${config}:/.kube/config bitnami/kubectl:1.15.3 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
+                        sh "docker run --rm -v ${config}:/.kube/config bitnami/kubectl:1.15 -n ${env.NS} set image deployment ${env.APP} ${env.APP}=${IMAGE_NAME}"
                     }
                 }
             }
