@@ -26,8 +26,7 @@ def call(Map map) {
 
             PORTAL_TOKEN = credentials("portal")
 
-//          # IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
-            IMAGE_NAME = "${HARBOR}/whjim/${JOB_NAME}:${BUILD_ID}"
+            IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
         }
 
         parameters {
@@ -155,8 +154,7 @@ def call(Map map) {
                                 log.debug("args = ${args}")
 
                                 def app = docker.build("$IMAGE_NAME", "${args} -f ${DOCKER_FILE} .")
-                                sh "docker push $IMAGE_NAME"
-//                                app.push()
+                                app.push()
                             }
                         }
                         sh "docker rmi -f $IMAGE_NAME"
