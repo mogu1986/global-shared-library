@@ -155,7 +155,8 @@ def call(Map map) {
                                 log.debug("args = ${args}")
 
                                 def app = docker.build("$IMAGE_NAME", "${args} -f ${DOCKER_FILE} .")
-                                app.push()
+                                sh "docker push $IMAGE_NAME"
+//                                app.push()
                             }
                         }
                         sh "docker rmi -f $IMAGE_NAME"
