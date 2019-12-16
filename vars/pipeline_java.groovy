@@ -27,7 +27,7 @@ def call(Map map) {
             PORTAL_TOKEN = credentials("portal")
 
 //          # IMAGE_NAME = "${HARBOR}/library/${JOB_NAME}:${BUILD_ID}"
-            IMAGE_NAME = "${JOB_NAME}:${BUILD_ID}"
+            IMAGE_NAME = "whjim/${JOB_NAME}:${BUILD_ID}"
         }
 
         parameters {
