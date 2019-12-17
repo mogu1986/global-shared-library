@@ -4,6 +4,11 @@ class AppMeta {
 
     def meta = [
             [
+                    app: "framework-parent",
+                    lang: 'jar',
+                    git: 'https://github.com/mogu1986/framework-parent.git'
+            ],
+            [
                     app: "demo-provider",
                     lang: 'java',
                     group: 'dubbo',
