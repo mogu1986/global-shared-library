@@ -23,7 +23,7 @@ def call(Map map) {
         }
 
         parameters {
-            choice(name: 'BUILD_BRANCH', choices: 'dev\nrelease', description: '请选择分支:')
+            choice(name: 'BUILD_BRANCH', choices: 'master\ndev\nrelease', description: '请选择分支:')
         }
 
         stages {
