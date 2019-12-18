@@ -34,8 +34,21 @@ class AppMeta {
                             'mit': '-Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -Ddubbo.registry.address=zookeeper://10.50.4.207:2181 -Ddubbo.protocol.port=20880 -Dserver.port=8080',
                             'sit': '-Duser.timezone=Asia/wh -Djava.security.egd=file:/dev/./urandom -Ddubbo.registry.address=zookeeper://10.50.4.207:2181 -Ddubbo.protocol.port=20880 -Dserver.port=8080',
                             'uat': '-Duser.timezone=Asia/hz -Djava.security.egd=file:/dev/./urandom -Ddubbo.registry.address=zookeeper://10.50.4.207:2181 -Ddubbo.protocol.port=20880 -Dserver.port=8080'
-                    ],
-                    portArgs: '-p 20002:8080'
+                    ]
+            ],
+            [
+                    app: "order",
+                    lang: 'java',
+                    namespace: 'default',
+                    group: 'web',
+                    appPort: 20003,
+                    artifact: 'order-service/target/order-service.jar',
+                    git: 'https://github.com/mogu1986/order.git',
+                    javaOpts: [
+                            'mit': '-Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080',
+                            'sit': '-Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080',
+                            'uat': '-Duser.timezone=Asia/Shanghai -Djava.security.egd=file:/dev/./urandom -Dserver.port=8080'
+                    ]
             ],
             // oms 304
             [
