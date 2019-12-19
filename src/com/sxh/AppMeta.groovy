@@ -9,6 +9,11 @@ class AppMeta {
                     git: 'https://github.com/mogu1986/feign-spring-boot-starter.git'
             ],
             [
+                    app: "redis-spring-boot-starter",
+                    lang: 'jar',
+                    git: 'https://github.com/mogu1986/redis-spring-boot-starter.git'
+            ],
+            [
                     app: "framework-parent",
                     lang: 'jar',
                     git: 'https://github.com/mogu1986/framework-parent.git'
