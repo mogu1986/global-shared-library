@@ -4,6 +4,11 @@ class AppMeta {
 
     def meta = [
             [
+                    app: "feign-spring-boot-starter",
+                    lang: 'jar',
+                    git: 'https://github.com/mogu1986/feign-spring-boot-starter.git'
+            ],
+            [
                     app: "framework-parent",
                     lang: 'jar',
                     git: 'https://github.com/mogu1986/framework-parent.git'
